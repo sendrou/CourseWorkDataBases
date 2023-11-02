@@ -1,10 +1,8 @@
 ﻿using Lab02;
-
-using Lab03.Services;
 using Lab3.Models;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Lab03.Services
+namespace Lab3.Services
 {
     public class CachedCarBrandsService
     {
@@ -36,7 +34,7 @@ namespace Lab03.Services
             else
             {
 
-                Console.WriteLine($"Марки машин о прохождении извлечены из кэша");
+                Console.WriteLine($"Марки машин извлечены из кэша");
             }
 
             return carBrands;

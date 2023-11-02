@@ -2,7 +2,7 @@
 using Lab3.Models;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Lab03.Services
+namespace Lab3.Services
 {
     public class CachedCarsService
     {

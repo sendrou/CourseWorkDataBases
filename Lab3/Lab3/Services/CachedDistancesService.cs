@@ -1,9 +1,8 @@
 ﻿using Lab02;
 using Lab3.Models;
 using Microsoft.Extensions.Caching.Memory;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace Lab03.Services
+namespace Lab3.Services
 {
     public class CachedDistancesService
     {
