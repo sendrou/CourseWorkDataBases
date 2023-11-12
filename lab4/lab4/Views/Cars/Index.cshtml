@@ -1,0 +1,34 @@
+﻿@{
+
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Lab3.Models.Car>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>"Cars"</title>
+</head>
+<body>
+    <table cellpadding="5">
+        <tr>
+            <th>CarID</th>
+            <th>CarBrand</th>
+            <th>LiftingCapacity</th>
+            <th>BodyVolume</th>
+            <th>RegistrationNumber</th>
+
+        </tr>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@car.CarId</td>
+                <td>@car.CarBrand.BrandName</td>
+                <td>@car.LiftingCapacity</td>
+                <td>@car.BodyVolume</td>
+                <td>@car.RegistrationNumber</td>
+
+            </tr>
+        }
+    </table>
+</body>
+</html>

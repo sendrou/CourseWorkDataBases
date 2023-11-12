@@ -1,0 +1,41 @@
+﻿@{
+
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Lab3.Models.CargoTransportation>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>"CargoTransportations"</title>
+</head>
+<body>
+    <table cellpadding="5">
+        <tr>
+            <th>DocumentID</th>
+            <th>Date</th>
+            <th>Organization</th>
+            <th>Distance</th>
+            <th>Driver</th>
+            <th>Car</th>
+            <th>Load</th>
+            <th>Tariff</th>
+
+        </tr>
+        @foreach (var cargo in Model)
+        {
+            string formattedDate = cargo.Date.HasValue ? $"{cargo.Date.Value.Day:00}.{cargo.Date.Value.Month:00}.{cargo.Date.Value.Year}" : string.Empty;
+            <tr>
+                <td>@cargo.DocumentId</td>
+                <td>@formattedDate</td>
+                <td>@cargo.Organization.OrganizationName</td>
+                <td>@cargo.Distance.Distance1</td>
+                <td>@cargo.Driver.FullName</td>
+                <td>@cargo.Car.RegistrationNumber</td>
+                <td>@cargo.Load.LoadName</td>
+                <td>@cargo.TransportationTariff.TariffPerTKm</td>
+
+            </tr>
+        }
+    </table>
+</body>
+</html>

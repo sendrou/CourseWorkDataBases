@@ -1,0 +1,30 @@
+﻿@{
+
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Lab3.Models.Driver>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>"Drivers"</title>
+</head>
+<body>
+    <table cellpadding="5">
+        <tr>
+            <th>DriverID</th>
+            <th>Name</th>
+            <th>PassportDetails</th>
+
+        </tr>
+        @foreach (var driver in Model)
+        {
+            <tr>
+                <td>@driver.DriverId</td>
+                <td>@driver.FullName</td>
+                <td>@driver.PassportDetails</td>
+
+            </tr>
+        }
+    </table>
+</body>
+</html>

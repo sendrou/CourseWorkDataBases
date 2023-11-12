@@ -1,0 +1,29 @@
+﻿@{
+
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Lab3.Models.TransportationTariff>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>"TransportationTariffs"</title>
+</head>
+<body>
+    <table cellpadding="5">
+        <tr>
+            <th>TransportationTariffID</th>
+            <th>TariffPer(t*km)</th>
+            <th>TariffPer(m^3*km)</th>
+
+        </tr>
+        @foreach (var tariff in Model)
+        {
+            <tr>
+                <td>@tariff.TransportationTariffId</td>
+                <td>@tariff.TariffPerTKm</td>
+                <td>@tariff.TariffPerM3Km</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
