@@ -74,7 +74,7 @@ namespace Cargo.Controllers
         public IActionResult Index()
         {
             int pageSize = 10;
-            List<Car> cars = _db.Cars.ToList(); 
+            List<Car> cars = _db.Cars.ToList();
             List<Distance> distances = _db.Distances.ToList();
             List<Driver> drivers = _db.Drivers.ToList();
             List<Load> loads = _db.Loads.ToList();
@@ -82,15 +82,22 @@ namespace Cargo.Controllers
             List<TransportationTariff> transportationTariffs = _db.TransportationTariffs.ToList();
             DateTime date = DateTime.Now;
             cars.Insert(0, new Car { RegistrationNumber = "Все", CarId = 0 });
-            distances.Insert(0, new Distance { Distance1 = 0, DistanceId = 0 });
+
             drivers.Insert(0, new Driver { FullName = "Все", DriverId = 0 });
             loads.Insert(0, new Load { LoadName = "Все", LoadId = 0 });
             organizations.Insert(0, new Organization { OrganizationName = "Все", OrganizationId = 0 });
-            transportationTariffs.Insert(0, new TransportationTariff { TariffPerM3Km = 0, TransportationTariffId = 0 });
+
 
             List<CargoTransportation> cargoTransportations = _db.CargoTransportations.ToList();
 
-            int car, page;
+            int car, driver, organization,load,startTariff, endTariff, startDistance,endDistance, page;
+            DateTime startDate, endDate;
+            startDistance = 0;
+            endTariff = 0;
+            endDistance = 0;
+            startTariff = 0;
+            endDate= DateTime.Now;
+            startDate = DateTime.Now;
             if (Request.Cookies.TryGetValue("carNumber", out string carNumber))
             {
                 car = Convert.ToInt32(carNumber);
@@ -99,6 +106,58 @@ namespace Cargo.Controllers
             {
                 car = 0;
             }
+            //if (Request.Cookies.TryGetValue("DistanceString", out string distanceString))
+            //{
+            //    distance = Convert.ToInt32(distanceString);
+            //}
+            //else
+            //{
+            //    distance = 0;
+            //}
+            //if (Request.Cookies.TryGetValue("DistanceString", out string distanceString))
+            //{
+            //    distance = Convert.ToInt32(distanceString);
+            //}
+            //else
+            //{
+            //    distance = 0;
+            //}
+
+
+            if (Request.Cookies.TryGetValue("DriverString", out string driverString))
+            {
+                driver = Convert.ToInt32(driverString);
+            }
+            else
+            {
+                driver = 0;
+            }
+            if (Request.Cookies.TryGetValue("OrganizationString", out string organizationString))
+            {
+                organization = Convert.ToInt32(organizationString);
+            }
+            else
+            {
+                organization = 0;
+            }
+            if (Request.Cookies.TryGetValue("LoadString", out string loadString))
+            {
+                load = Convert.ToInt32(loadString);
+            }
+            else
+            {
+                load = 0;
+            }
+
+            //if (Request.Cookies.TryGetValue("TariffString", out string tariffString))
+            //{
+            //    tariff = Convert.ToInt32(tariffString);
+            //}
+            //else
+            //{
+            //    tariff = 0;
+            //}
+
             if (car != null && car != 0)
             {
                 cargoTransportations = cargoTransportations.Where(t => t.CarId == car).ToList();
@@ -113,8 +172,8 @@ namespace Cargo.Controllers
             }
             var items = cargoTransportations.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             PageViewModel pageViewModel = new PageViewModel(cargoTransportations.Count, page, pageSize);
-            FilterCargoTransportationsViewModel filterTestsViewModel = new FilterCargoTransportationsViewModel(cars, distances, drivers, loads, organizations, 
-                transportationTariffs, 0, 0, 0, 0, 0, 0, date);
+            FilterCargoTransportationsViewModel filterTestsViewModel = new FilterCargoTransportationsViewModel(cars,  drivers, loads, organizations, 
+                 car, startDistance,endDistance,driver,load,organization,startTariff,endTariff,startDate,endDate);
             var viewModel = new CargoTransportationsViewModel(items, pageViewModel, filterTestsViewModel);
 
             return View(viewModel);
@@ -189,17 +248,19 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateIndex(int car = 0, int page = 1)
+        public async Task<IActionResult> UpdateIndex(int car = 0,int driver =0, int load = 0, int organiztion =0, int page = 1)
         {
             Response.Cookies.Delete("CarNumber");
             Response.Cookies.Append("CarNumber", car.ToString());
 
+            Response.Cookies.Delete("DistanceCount");
+            Response.Cookies.Append("DistanceCount", car.ToString());
 
             Response.Cookies.Delete("CargoPage");
             Response.Cookies.Append("CargoPage", page.ToString());
 
 
-
+            
 
             return RedirectToAction("Index");
         }

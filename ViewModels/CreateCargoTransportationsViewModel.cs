@@ -22,6 +22,7 @@ namespace Cargo.ViewModels
             Organizations = new SelectList(organizations, "OrganizationId", "OrganizationName", organizations[0]);
 
             TransportationTariffs = new SelectList(transportationTariffs, "TransportationTariffId", "TariffPerTKm", transportationTariffs[0]);
+            Date = DateTime.Now;
 
         }
 

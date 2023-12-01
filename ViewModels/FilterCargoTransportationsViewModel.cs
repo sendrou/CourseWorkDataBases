@@ -8,36 +8,41 @@ namespace Cargo.ViewModels
 {
     public class FilterCargoTransportationsViewModel
     {
-        public FilterCargoTransportationsViewModel(List<Car> cars, List<Distance> distances, List<Driver> drivers, List<Load> loads, List<Organization> organizations, List<TransportationTariff> transportationTariffs, int car, int distance, int driver, int load, int organization, int tariff, DateTime date)
+        public FilterCargoTransportationsViewModel(List<Car> cars,  List<Driver> drivers, List<Load> loads, List<Organization> organizations,  int car, int startDistance, int endDistance, int driver, int load, int organization, int startTariff, int endTariff, DateTime startDate,DateTime endDate)
         {
 
 
             Cars = new SelectList(cars, "CarId", "RegistrationNumber", car);
             SelectedCarId = car;
-            SelectedDistanceId = distance;
+            SelectedStartDistance = startDistance;
+            SelectedEndDistance = endDistance;
+
             SelectedDriverId = driver;
             SelectedLoadId = load;
             SelectedOrganizationId = organization;
-            SelectedTransportationTariffId = tariff;
-            SelectedDate = date;
-            Distances = new SelectList(distances, "DistanceId", "Distance1", distance);
+            SelectedStartTransportationTariffId = startTariff;
+            SelectedEndTransportationTariffId = endTariff;
+
+            SelectedStartDate = startDate;
+            SelectedEndDate = endDate;
             Drivers = new SelectList(drivers, "DriverId", "FullName", driver);
 
             Loads = new SelectList(loads, "LoadId", "LoadName", load);
             Organizations = new SelectList(organizations, "OrganizationId", "OrganizationName", organization);
 
-            TransportationTariffs = new SelectList(transportationTariffs, "TransportationTariffId", "TariffPerTKm", tariff);
         }
         public SelectList Cars { get; }
-        public SelectList Distances { get; }
+
         public SelectList Drivers { get; }
         public SelectList Loads { get; }
         public SelectList Organizations { get; }
-        public SelectList TransportationTariffs { get; }
 
 
 
-        public DateTime SelectedDate { get; set; }
+
+        public DateTime SelectedStartDate { get; set; }
+        public DateTime SelectedEndDate { get; set; }
+
 
         public int SelectedOrganizationId { get; set; }
 
@@ -45,12 +50,15 @@ namespace Cargo.ViewModels
         public int SelectedCarId { get; set; }
 
 
-        public int SelectedDistanceId { get; set; }
+        public int SelectedStartDistance { get; set; }
+        public int SelectedEndDistance { get; set; }
 
         public int SelectedDriverId { get; set; }
 
         public int SelectedLoadId { get; set; }
 
-        public int SelectedTransportationTariffId { get; set; }
+        public int SelectedStartTransportationTariffId { get; set; }
+        public int SelectedEndTransportationTariffId { get; set; }
+
     }
 }
