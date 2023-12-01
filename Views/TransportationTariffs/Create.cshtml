@@ -1,0 +1,44 @@
+﻿@{
+
+    ViewBag.Title = "Добавление тарифов";
+}
+@model Cargo.ViewModels.CreateTransportationTariffsViewModel
+ 
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>"Tariff"</title>
+</head>
+<body>
+       <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Index">Поиск</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active">Добавление</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body text-center">
+                <form asp-action="Create" asp-controller="TransportationTariffs">
+                    <div class="form-group">
+                        <label asp-for="TariffPerTKm">Тариф за время</label>
+                        <input type="text" asp-for="TariffPerTKm" class="form-control" />
+                        <span class="text-danger small" asp-validation-for="TariffPerTKm"></span>
+                        <label asp-for="TariffPerM3Km">Тариф за м^3</label>
+                        <input type="text" asp-for="TariffPerM3Km" class="form-control" />
+                        <span class="text-danger small" asp-validation-for="TariffPerM3Km"></span>
+                    </div>
+                    <div style="margin-top: 10px">
+                        <input type="submit" class="btn btn-outline-secondary" value="Сохранить" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>  

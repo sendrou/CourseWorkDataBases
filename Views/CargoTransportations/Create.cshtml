@@ -1,0 +1,68 @@
+﻿@{
+
+    ViewBag.Title = "Добавление транспортировок";
+}
+@model Cargo.ViewModels.CreateCargoTransportationsViewModel
+ 
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>"Cargo"</title>
+</head>
+<body>
+       <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Index">Поиск</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active bg-dark">Добавление</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body text-center">
+                <form asp-action="Create" asp-controller="CargoTransportations">
+                    <div class="form-group">
+                        <div class="col">
+                            <label for="cars">Машины</label>
+                            <select id="car" class="form-control" asp-for="CarId" asp-items="Model.Cars"></select>
+                        </div>
+                        <div class="col">
+                            <label for="distance">Расстояния</label>
+                            <select class="form-control" id="distance" asp-for="DistanceId" asp-items="Model.Distances"></select>
+                        </div>
+                        <div class="col">
+                            <label for="driver">Водители</label>
+                            <select class="form-control" id="driver" asp-for="DriverId" asp-items="Model.Drivers"></select>
+                        </div>
+                        <div class="col">
+                            <label for="organization">Организации</label>
+                            <select class="form-control" id="organization" asp-for="OrganizationId" asp-items="Model.Organizations"></select>
+                        </div>
+                        <div class="col">
+                            <label for="load">Груз</label>
+                            <select class="form-control" id="load" asp-for="LoadId" asp-items="Model.Loads"></select>
+                        </div>
+                        <div class="col">
+                            <label for="transportationTariff">Тариф</label>
+                            <select class="form-control" id="transportationTariff" asp-for="TransportationTariffId" asp-items="Model.TransportationTariffs"></select>
+                        </div>
+                        <div class="col">
+                            <label for="date">Время</label>
+                            <input type="date" class="form-control" asp-for="Date" />
+                        </div>
+
+
+                    </div>
+                    <div style="margin-top: 10px">
+                        <input type="submit" class="btn btn-outline-dark" value="Сохранить" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>   

@@ -1,0 +1,26 @@
+﻿@{
+
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Cargo.Models.Settlement>
+<!DOCTYPE html>
+<html>
+ <head>
+     <title>"Settlements"</title>
+ </head>
+<body>
+    <table cellpadding="5">
+        <tr>
+            <th>SettlementID</th>
+            <th>SettlementName</th>
+        </tr>
+        @foreach (var settlement in Model)
+        {
+            <tr>
+                <td>@settlement.SettlementId</td>
+                <td>@settlement.SettlementName</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>

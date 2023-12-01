@@ -1,0 +1,41 @@
+﻿@* @{
+
+    ViewBag.Title = "Добавление марки машины";
+}
+@model Cargo.ViewModels.CreateCarBrandsViewModel
+
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>"CarBrands"</title>
+</head>
+<body>
+       <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Index">Поиск</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active">Добавление</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body text-center">
+                <form asp-action="Create" asp-controller="Topics">
+                    <div class="form-group">
+                        <label asp-for="Name">Название</label>
+                        <input type="text" asp-for="Name" class="form-control"/>
+                        <span class="text-danger small" asp-validation-for="Name"></span>
+                    </div>
+                    <div style="margin-top: 10px">
+                        <input type="submit" class="btn btn-outline-secondary" value="Сохранить" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>  *@

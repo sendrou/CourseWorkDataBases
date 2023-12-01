@@ -1,0 +1,30 @@
+﻿@{
+
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Cargo.Models.Distance>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>"Distances"</title>
+</head>
+<body>
+    <table cellpadding="5">
+        <tr>
+            <th>DistanceID</th>
+            <th>DeparturesSettlement</th>
+            <th>ArrivalSettlement</th>
+            <th>Distance</th>
+        </tr>
+        @foreach (var distance in Model)
+        {
+            <tr>
+                <td>@distance.DistanceId</td>
+                <td>@distance.DeparturesSettlement.SettlementName</td>
+                <td>@distance.ArrivalSettlement.SettlementName</td>
+                <td>@distance.Distance1</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>

@@ -1,0 +1,73 @@
+﻿@model Cargo.ViewModels.EditCargoTransportationsViewModel
+
+@{
+    ViewBag.Title = "Изменение теста";
+}
+
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="container">
+        <form asp-action="Edit" asp-controller="CargoTransportations">
+
+            <div class="card">
+                <div class="card-header text-center bg-light">
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index">Поиск</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Create">Добавление</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active bg-dark">Изменение</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body text-center">
+                        <span class="form-group">
+                            <input type="hidden" asp-for="Id" />
+                        </span>
+                    <div class="form-group">
+                        <div class="col">
+                            <label for="cars">Машины</label>
+                            <select id="car" class="form-control" asp-for="SelectedCarId" asp-items="Model.Cars"></select>
+                        </div>
+                        <div class="col">
+                            <label for="distance">Расстояния</label>
+                            <select class="form-control" id="distance" asp-for="SelectedDistanceId" asp-items="Model.Distances"></select>
+                        </div>
+                        <div class="col">
+                            <label for="driver">Водители</label>
+                            <select class="form-control" id="driver" asp-for="SelectedDriverId" asp-items="Model.Drivers"></select>
+                        </div>
+                        <div class="col">
+                            <label for="organization">Организации</label>
+                            <select class="form-control" id="organization" asp-for="SelectedOrganizationId" asp-items="Model.Organizations"></select>
+                        </div>
+                        <div class="col">
+                            <label for="load">Груз</label>
+                            <select class="form-control" id="load" asp-for="SelectedLoadId" asp-items="Model.Loads"></select>
+                        </div>
+                        <div class="col">
+                            <label for="transportationTariff">Тариф</label>
+                            <select class="form-control" id="transportationTariff" asp-for="SelectedTransportationTariffId" asp-items="Model.TransportationTariffs"></select>
+                        </div>
+                        <div class="col">
+                            <label for="date">Время</label>
+                            <input type="date" class="form-control" asp-for="SelectedDate" />
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-outline-dark" value="Сохранить" />
+                    </div>
+                </div>
+                
+            </div>
+                        
+                    </form>
+                </div>
+
+</body>
+</html>

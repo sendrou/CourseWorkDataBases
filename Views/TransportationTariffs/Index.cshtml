@@ -1,0 +1,65 @@
+﻿@{
+
+    Layout = "/Views/Shared/_Layout.cshtml";
+}
+@model Cargo.ViewModels.TransportationTariffsViewModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title>"TransportationTariffs"</title>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+    <form asp-action="UpdateIndex" method="post" id="form">
+
+        <div class="card-header text-center">
+            <ul class="nav nav-pills card-header-pills">
+                <li class="nav-item">
+                    <a class="nav-link active">Поиск</a>
+                </li>
+                 <li class="nav-item">
+                    <a class="nav-link" asp-action="Create">Добавление</a>
+                </li> =
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="form-row float-right" style="margin-top:10px; margin-bottom:10px">
+                <div class="col">
+                    <input class="btn btn-primary" value="Очистить" type="button" onclick="clearInputs()" />
+                </div>
+                <div class="col">
+                    <input class="btn btn-info" type="submit" value="Найти" />
+                </div>
+            </div>
+
+        </div>
+
+    </form>
+        </div>
+        <div class="card" style="margin-top: 10px">
+            <div class="table-responsive">
+                <table class="table table-border">
+                    <thead class="thead-dark">
+        <tr>
+            <th>TransportationTariffID</th>
+            <th>TariffPer(t*km)</th>
+            <th>TariffPer(m^3*km)</th>
+
+        </tr>
+                    </thead>
+                    <tbody>
+
+        @foreach (var tariff in Model.TransportationTariffs)
+        {
+            <tr>
+                <td>@tariff.TransportationTariffId</td>
+                <td>@tariff.TariffPerTKm</td>
+                <td>@tariff.TariffPerM3Km</td>
+            </tr>
+        }
+                    </tbody>
+                </table>
+    </div>
+</body>
+</html>
