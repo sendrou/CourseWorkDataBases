@@ -11,7 +11,7 @@ namespace Cargo.ViewModels
         public FilterCargoTransportationsViewModel FilterCargoTransportationsViewModel { get; }
 
 
-        //public ApplicationUser ApplicationUser { get; }
+        public ApplicationUser ApplicationUser { get; }
         public CargoTransportationsViewModel(IEnumerable<CargoTransportation> cargoTransportations, PageViewModel viewModel, FilterCargoTransportationsViewModel filterCargoTransportationsViewModel)
         {
             CargoTransportations = cargoTransportations;
