@@ -103,9 +103,10 @@
                 {
                     <li class="page-item">
                         <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber-1)"
-                              
+                              asp-route-endTariff="@(Model.FilterTransportationTariffsViewModel.SelectedEndTransportationTariff)"
+                              asp-route-startTariff="@(Model.FilterTransportationTariffsViewModel.SelectedStartTransportationTariff)"
                               method="post">
-                            @* asp-route-car="@(Model.FilterTransportationTariffsViewModel.SelectedCarId)" *@
+                            
                             <button type="submit" class="page-link">
                                 Предыдущая
                             </button>
@@ -125,9 +126,10 @@
                 {
                     <li class="page-item">
                         <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber+1)"
-                              
+                              asp-route-endTariff="@(Model.FilterTransportationTariffsViewModel.SelectedEndTransportationTariff)"
+                              asp-route-startTariff="@(Model.FilterTransportationTariffsViewModel.SelectedStartTransportationTariff)"
                               method="post">
-                            @* asp-route-car="@(Model.FilterCargoTransportationsViewModel.SelectedCarId)" *@
+                            
                             <button type="submit" class="page-link">
                                 Следующая
                             </button>
@@ -148,5 +150,17 @@
 
 
     </div>
+    <script>
+        function clearInputs() {
+            let startTariff = document.getElementById("startTariff");
+            startTariff.value = 0;
+            let endTariff = document.getElementById("endTariff");
+            endTariff.value = 10000;
+
+
+            let form = document.getElementById("form");
+            form.submit();
+        }
+    </script>
 </body>
 </html>

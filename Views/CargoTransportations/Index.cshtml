@@ -151,7 +151,16 @@
                     {
                         <li class="page-item">
                             <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber-1)"
-                                  asp-route-car="@(Model.FilterCargoTransportationsViewModel.SelectedCarId)"
+                              asp-route-car="@(Model.FilterCargoTransportationsViewModel.SelectedCarId)"
+                              asp-route-load="@(Model.FilterCargoTransportationsViewModel.SelectedLoadId)"
+                              asp-route-organization="@(Model.FilterCargoTransportationsViewModel.SelectedOrganizationId)"
+                              asp-route-driver="@(Model.FilterCargoTransportationsViewModel.SelectedDriverId)"
+                              asp-route-startDistance="@(Model.FilterCargoTransportationsViewModel.SelectedStartDistance)"
+                              asp-route-endDistance="@(Model.FilterCargoTransportationsViewModel.SelectedEndDistance)"
+                              asp-route-endDate="@(Model.FilterCargoTransportationsViewModel.SelectedEndDate)"
+                              asp-route-startDate="@(Model.FilterCargoTransportationsViewModel.SelectedStartDate)"
+                              asp-route-endTariff="@(Model.FilterCargoTransportationsViewModel.SelectedEndTransportationTariff)"
+                              asp-route-startTariff="@(Model.FilterCargoTransportationsViewModel.SelectedStartTransportationTariff)"
                                   method="post">
                                 <button type="submit" class="page-link">
                                     Предыдущая
@@ -172,7 +181,18 @@
                     {
                         <li class="page-item">
                             <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber+1)"
-                                  asp-route-car="@(Model.FilterCargoTransportationsViewModel.SelectedCarId)" method="post">
+                              asp-route-car="@(Model.FilterCargoTransportationsViewModel.SelectedCarId)"
+                              asp-route-load="@(Model.FilterCargoTransportationsViewModel.SelectedLoadId)"
+                              asp-route-organization="@(Model.FilterCargoTransportationsViewModel.SelectedOrganizationId)"
+                              asp-route-driver="@(Model.FilterCargoTransportationsViewModel.SelectedDriverId)"
+                              asp-route-startDistance="@(Model.FilterCargoTransportationsViewModel.SelectedStartDistance)"
+                              asp-route-endDistance="@(Model.FilterCargoTransportationsViewModel.SelectedEndDistance)"
+                              asp-route-endDate="@(Model.FilterCargoTransportationsViewModel.SelectedEndDate)"
+                              asp-route-startDate="@(Model.FilterCargoTransportationsViewModel.SelectedStartDate)"
+                              asp-route-endTariff="@(Model.FilterCargoTransportationsViewModel.SelectedEndTransportationTariff)"
+                              asp-route-startTariff="@(Model.FilterCargoTransportationsViewModel.SelectedStartTransportationTariff)"
+                                  method="post">
+
                                 <button type="submit" class="page-link">
                                     Следующая
                                 </button>
@@ -193,5 +213,33 @@
         
         
     </div>
+    <script>
+        function clearInputs() {
+            let startTariff = document.getElementById("startTariff");
+            startTariff.value = 0;
+            let endTariff = document.getElementById("endTariff");
+            endTariff.value = 10000;
+            let startDistance = document.getElementById("startDistance");
+            startDistance.value = 0;
+            let endDistance = document.getElementById("endDistance");
+            endDistance.value = 100000;
+            let startDate = document.getElementById("startDate");
+            startDate.value = "0001-01-01";
+            let endDate = document.getElementById("endDate");
+            endDate.value = "2030-01-01";
+
+            let load = document.getElementById("load");
+            load.value = 0;
+            let organization = document.getElementById("organization");
+            organization.value = 0;
+            let driver = document.getElementById("driver");
+            driver.value = 0;
+            let car = document.getElementById("car");
+            car.value = 0;
+
+            let form = document.getElementById("form");
+            form.submit();
+        }
+    </script>
 </body>
 </html>

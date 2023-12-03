@@ -318,6 +318,12 @@ namespace Cargo.Controllers
         public async Task<IActionResult> UpdateIndex(int car = 0, int driver = 0, int load = 0, int organization = 0, int endTariff = 1000, int startTariff = 0, int startDistance = 0,
             int endDistance = 10000, DateTime startDate = default(DateTime), DateTime endDate = default(DateTime), int page = 1)
         {
+
+            if (endDate == default(DateTime))
+            {
+                endDate = new DateTime(2030, 1, 1);
+            }
+
             Response.Cookies.Delete("CarNumber");
             Response.Cookies.Append("CarNumber", car.ToString());
 
