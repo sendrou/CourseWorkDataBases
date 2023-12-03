@@ -2,25 +2,159 @@
 
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-@model IEnumerable<Cargo.Models.Organization>
+@model Cargo.ViewModels.OrganizationsViewModel
 <!DOCTYPE html>
 <html>
- <head>
-     <title>"Organizations"</title>
- </head>
-<body>
-    <table cellpadding="5">
-        <tr>
-            <th>OrganizationID</th>
-            <th>OrganizationName</th>
-        </tr>
-        @foreach (var organization in Model)
-        {
-            <tr>
-                <td>@organization.OrganizationId</td>
-                <td>@organization.OrganizationName</td>
-            </tr>
+<head>
+    <title>"Organizations"</title>
+    <style>
+        label {
+            white-space: nowrap;
         }
-    </table>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card ">
+            <form asp-action="UpdateIndex" method="post" id="form">
+
+                <div class="card-header text-center">
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active bg-dark">Поиск</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " asp-action="Create">Добавление</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body " style="margin-bottom: -20px">
+
+                    <div class="form-row">
+
+
+                         <div class="col">
+                            <label for="organizationName">Название</label>
+                            <input type="text" class="form-control" id="organizationName" name="organizationName" value="@Model.FilterOrganizationsViewModel.SelectedOrganizationName"></input>
+                        </div>
+                
+
+                        <div class="card-body">
+                            <div class="form-row float-right" style="margin-top:10px; margin-bottom:10px">
+                                <div class="col">
+                                    <input class="btn btn-dark" value="Очистить" type="button" onclick="clearInputs()" />
+                                </div>
+                                <div class="col">
+                                    <input class="btn btn-dark" type="submit" value="Найти" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+        </div>
+        <div class="card " style="margin-top: 20px; margin-bottom:-20px;">
+
+            <table class="table table-border " style="margin-bottom:-1px;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>OrganizationId</th>
+                        <th>OrganizationName</th>
+
+                        <th></th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var organization in Model.Organizations)
+                    {
+                        <tr>
+                            <td>@organization.OrganizationId</td>
+                            <td>@organization.OrganizationName</td>
+
+                            <td>
+                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@organization.OrganizationId">Изменить</a>
+                            </td>
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@organization.OrganizationId" method="post">
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        Удалить
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 100px; margin-bottom:100px"></div>
+        <nav style="margin-top: 10px; margin-bottom:50px">
+            <ul class="pagination justify-content-end">
+                @if (Model.PageViewModel.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber-1)"
+                              asp-route-organizationName="@(Model.FilterOrganizationsViewModel.SelectedOrganizationName)"
+                              method="post">
+
+                            <button type="submit" class="page-link">
+                                Предыдущая
+                            </button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <button type="submit" class="page-link">
+                            Предыдущая
+                        </button>
+                    </li>
+                }
+
+                @if (Model.PageViewModel.HasNextPage)
+                {
+                    <li class="page-item">
+                        <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber+1)"
+                              asp-route-organizationName="@(Model.FilterOrganizationsViewModel.SelectedOrganizationName)"
+                              method="post">
+
+                            <button type="submit" class="page-link">
+                                Следующая
+                            </button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <button type="submit" class="page-link">
+                            Следующая
+                        </button>
+                    </li>
+                }
+            </ul>
+        </nav>
+        <div style="margin-top: 100px; margin-bottom:100px"></div>
+
+
+    </div>
+    <script>
+        function clearInputs() {
+            let organizationName = document.getElementById("organizationName");
+            organizationName.value = "";
+
+
+
+            let form = document.getElementById("form");
+            form.submit();
+        }
+    </script>
 </body>
 </html>

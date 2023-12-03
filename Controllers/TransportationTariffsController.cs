@@ -117,7 +117,7 @@ namespace Cargo.Controllers
             }
             else
             {
-                endTariff = 1000;
+                endTariff = 10000;
             }
 
             
@@ -142,8 +142,8 @@ namespace Cargo.Controllers
             }
             var items = transportationTariffs.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             PageViewModel pageViewModel = new PageViewModel(transportationTariffs.Count, page, pageSize);
-            FilterTransportationTariffsViewModel filterTestsViewModel = new FilterTransportationTariffsViewModel(startTariff, endTariff);
-            var viewModel = new TransportationTariffsViewModel(items, pageViewModel, filterTestsViewModel);
+            FilterTransportationTariffsViewModel filterTariffViewModel = new FilterTransportationTariffsViewModel(startTariff, endTariff);
+            var viewModel = new TransportationTariffsViewModel(items, pageViewModel, filterTariffViewModel);
 
             return View(viewModel);
         }

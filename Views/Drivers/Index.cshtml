@@ -2,29 +2,165 @@
 
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-@model IEnumerable<Cargo.Models.Driver>
+@model Cargo.ViewModels.DriversViewModel
 <!DOCTYPE html>
 <html>
 <head>
     <title>"Drivers"</title>
+    <style>
+        label {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
-    <table cellpadding="5">
-        <tr>
-            <th>DriverID</th>
-            <th>Name</th>
-            <th>PassportDetails</th>
+    <div class="container">
+        <div class="card ">
+            <form asp-action="UpdateIndex" method="post" id="form">
 
-        </tr>
-        @foreach (var driver in Model)
-        {
-            <tr>
-                <td>@driver.DriverId</td>
-                <td>@driver.FullName</td>
-                <td>@driver.PassportDetails</td>
+                <div class="card-header text-center">
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active bg-dark">Поиск</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " asp-action="Create">Добавление</a>
+                        </li>
+                    </ul>
+                </div>
 
-            </tr>
+                <div class="card-body " style="margin-bottom: -20px">
+
+                    <div class="form-row">
+
+
+                         <div class="col">
+                            <label for="driverName">Имя</label>
+                            <input type="text" class="form-control" id="driverName" name="driverName" value="@Model.FilterDriversViewModel.SelectedDriverName"></input>
+                        </div>
+                        <div class="col">
+                            <label for="passportDetails">Паспорт</label>
+                            <input type="text" class="form-control" id="passportDetails" name="passportDetails" value="@Model.FilterDriversViewModel.SelectedPassportDetails"></input>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-row float-right" style="margin-top:10px; margin-bottom:10px">
+                                <div class="col">
+                                    <input class="btn btn-dark" value="Очистить" type="button" onclick="clearInputs()" />
+                                </div>
+                                <div class="col">
+                                    <input class="btn btn-dark" type="submit" value="Найти" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+        </div>
+        <div class="card " style="margin-top: 20px; margin-bottom:-20px;">
+
+            <table class="table table-border " style="margin-bottom:-1px;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>DriverId</th>
+                        <th>FullName</th>
+                        <th>PassportDetails</th>
+                        <th></th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var driver in Model.Drivers)
+                    {
+                        <tr>
+                            <td>@driver.DriverId</td>
+                            <td>@driver.FullName</td>
+                            <td>@driver.PassportDetails</td>
+                            <td>
+                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@driver.DriverId">Изменить</a>
+                            </td>
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@driver.DriverId" method="post">
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        Удалить
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 100px; margin-bottom:100px"></div>
+        <nav style="margin-top: 10px; margin-bottom:50px">
+            <ul class="pagination justify-content-end">
+                @if (Model.PageViewModel.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber-1)"
+                              asp-route-driverName="@(Model.FilterDriversViewModel.SelectedDriverName)"
+                              asp-route-passportDetails="@(Model.FilterDriversViewModel.SelectedPassportDetails)"
+                              method="post">
+
+                            <button type="submit" class="page-link">
+                                Предыдущая
+                            </button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <button type="submit" class="page-link">
+                            Предыдущая
+                        </button>
+                    </li>
+                }
+
+                @if (Model.PageViewModel.HasNextPage)
+                {
+                    <li class="page-item">
+                        <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber+1)"
+                              asp-route-driverName="@(Model.FilterDriversViewModel.SelectedDriverName)"
+                              asp-route-passportDetails="@(Model.FilterDriversViewModel.SelectedPassportDetails)"
+                              method="post">
+
+                            <button type="submit" class="page-link">
+                                Следующая
+                            </button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <button type="submit" class="page-link">
+                            Следующая
+                        </button>
+                    </li>
+                }
+            </ul>
+        </nav>
+        <div style="margin-top: 100px; margin-bottom:100px"></div>
+
+
+    </div>
+    <script>
+        function clearInputs() {
+            let driverName = document.getElementById("driverName");
+            driverName.value = "";
+            let passportDetails = document.getElementById("passportDetails");
+            passportDetails.value = "";
+
+
+            let form = document.getElementById("form");
+            form.submit();
         }
-    </table>
+    </script>
 </body>
 </html>

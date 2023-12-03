@@ -2,29 +2,191 @@
 
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-@model IEnumerable<Cargo.Models.Load>
+@model Cargo.ViewModels.LoadsViewModel
 <!DOCTYPE html>
 <html>
 <head>
     <title>"Loads"</title>
+    <style>
+        label {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
-    <table cellpadding="5">
-        <tr>
-            <th>LoadID</th>
-            <th>Name</th>
-            <th>Volume</th>
-            <th>Weight</th>
-        </tr>
-        @foreach (var load in Model)
-        {
-            <tr>
-                <td>@load.LoadId</td>
-                <td>@load.LoadName</td>
-                <td>@load.Volume</td>
-                <td>@load.Weight</td>
-            </tr>
+    <div class="container">
+        <div class="card ">
+            <form asp-action="UpdateIndex" method="post" id="form">
+
+                <div class="card-header text-center">
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active bg-dark">Поиск</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " asp-action="Create">Добавление</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body " style="margin-bottom: -20px">
+
+                    <div class="form-row">
+
+
+                         <div class="col">
+                            <label for="loadName">Название</label>
+                            <input type="text" class="form-control" id="loadName" name="loadName" value="@Model.FilterLoadsViewModel.SelectedLoadName"></input>
+                        </div>
+                        <div class="col">
+                            <label for="startVolume">Объём от</label>
+                            <input type="number" class="form-control" id="startVolume" name="startVolume" value="@Model.FilterLoadsViewModel.SelectedStartVolume"></input>
+                        </div>
+                        <div class="col">
+                            <label for="endVolume">Объём до</label>
+                            <input type="number" class="form-control" id="endVolume" name="endVolume" value="@Model.FilterLoadsViewModel.SelectedEndVolume"></input>
+                        </div>
+                        <div class="col">
+                            <label for="startWeight">Вес от</label>
+                            <input type="number" class="form-control" id="startWeight" name="startWeight" value="@Model.FilterLoadsViewModel.SelectedStartWeight"></input>
+                        </div>
+                        <div class="col">
+                            <label for="endWeight">Вес до</label>
+                            <input type="number" class="form-control" id="endWeight" name="endWeight" value="@Model.FilterLoadsViewModel.SelectedEndWeight"></input>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row float-right" style="margin-top:10px; margin-bottom:10px">
+                                <div class="col">
+                                    <input class="btn btn-dark" value="Очистить" type="button" onclick="clearInputs()" />
+                                </div>
+                                <div class="col">
+                                    <input class="btn btn-dark" type="submit" value="Найти" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+        </div>
+        <div class="card " style="margin-top: 20px; margin-bottom:-20px;">
+
+            <table class="table table-border " style="margin-bottom:-1px;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>LoadId</th>
+                        <th>LoadName</th>
+                        <th>Volume</th>
+                        <th>Weight</th>
+                        <th></th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var load in Model.Loads)
+                    {
+                        <tr>
+                            <td>@load.LoadId</td>
+                            <td>@load.LoadName</td>
+                            <td>@load.Volume</td>
+                            <td>@load.Weight</td>
+
+
+                            <td>
+                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@load.LoadId">Изменить</a>
+                            </td>
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@load.LoadId" method="post">
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        Удалить
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 100px; margin-bottom:100px"></div>
+        <nav style="margin-top: 10px; margin-bottom:50px">
+            <ul class="pagination justify-content-end">
+                @if (Model.PageViewModel.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber-1)"
+                              asp-route-startVolume="@(Model.FilterLoadsViewModel.SelectedStartVolume)"
+                              asp-route-endVolume="@(Model.FilterLoadsViewModel.SelectedEndVolume)"
+                              asp-route-startWeight="@(Model.FilterLoadsViewModel.SelectedStartWeight)"
+                              asp-route-endWeight="@(Model.FilterLoadsViewModel.SelectedEndWeight)"
+                              asp-route-loadName="@(Model.FilterLoadsViewModel.SelectedLoadName)"
+                              method="post">
+                            
+
+                            <button type="submit" class="page-link">
+                                Предыдущая
+                            </button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <button type="submit" class="page-link">
+                            Предыдущая
+                        </button>
+                    </li>
+                }
+
+                @if (Model.PageViewModel.HasNextPage)
+                {
+                    <li class="page-item">
+                        <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber+1)"
+                              asp-route-startVolume="@(Model.FilterLoadsViewModel.SelectedStartVolume)"
+                              asp-route-endVolume="@(Model.FilterLoadsViewModel.SelectedEndVolume)"
+                              asp-route-startWeight="@(Model.FilterLoadsViewModel.SelectedStartWeight)"
+                              asp-route-endWeight="@(Model.FilterLoadsViewModel.SelectedEndWeight)"
+                              asp-route-loadName="@(Model.FilterLoadsViewModel.SelectedLoadName)"
+                              method="post">
+                            <button type="submit" class="page-link">
+                                Следующая
+                            </button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <button type="submit" class="page-link">
+                            Следующая
+                        </button>
+                    </li>
+                }
+            </ul>
+        </nav>
+        <div style="margin-top: 100px; margin-bottom:100px"></div>
+
+
+    </div>
+    <script>
+        function clearInputs() {
+            let loadName = document.getElementById("loadName");
+            loadName.value = "";
+
+            let startVolume = document.getElementById("startVolume");
+            startVolume.value = 0;
+            let startWeight = document.getElementById("startWeight");
+            startWeight.value = 0;
+            let endWeight = document.getElementById("endWeight");
+            endWeight.value = 10000;
+            let endVolume = document.getElementById("endVolume");
+            endVolume.value = 10000;
+            let form = document.getElementById("form");
+            form.submit();
         }
-    </table>
+    </script>
 </body>
 </html>

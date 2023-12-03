@@ -1,0 +1,51 @@
+﻿@model Cargo.ViewModels.EditOrganizationsViewModel
+
+@{
+    ViewBag.Title = "Изменение организаций";
+}
+
+<!DOCTYPE html>
+<html>
+<body>
+    <div class="container">
+        <form asp-action="Edit" asp-controller="Organizations">
+
+            <div class="card">
+                <div class="card-header text-center bg-light">
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Index">Поиск</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-action="Create">Добавление</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active bg-dark">Изменение</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body text-center">
+                        <span class="form-group">
+                            <input type="hidden" asp-for="Id" />
+                        </span>
+                    <div class="form-group">
+                        <div class="col">
+                            <label asp-for="OrganizationName">Название</label>
+                            <input type="text" id="OrganizationName" class="form-control" asp-for="OrganizationName" />
+                        </div>
+                        
+                        
+
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-outline-dark" value="Сохранить" />
+                    </div>
+                </div>
+                
+            </div>
+                        
+                    </form>
+                </div>
+
+</body>
+</html>

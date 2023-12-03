@@ -3,10 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Cargo.ViewModels
 {
-    public class CreateCarBrandsViewModel
+    public class CreateSettlementsViewModel
     {
         [Required]
-        public string CarBrand { get; set; }
-        
+        public string SettlementName { get; set; }
+
+
+
     }
 }
+

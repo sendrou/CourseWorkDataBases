@@ -1,13 +1,13 @@
 ﻿@{
 
-    ViewBag.Title = "Добавление марок";
+    ViewBag.Title = "Добавление организаций";
 }
-@model Cargo.ViewModels.CreateCarBrandsViewModel
+@model Cargo.ViewModels.CreateOrganizationsViewModel
  
  <!DOCTYPE html>
 <html>
 <head>
-    <title>CarBrand</title>
+    <title>Organization</title>
 </head>
 <body>
        <div class="container">
@@ -23,11 +23,11 @@
                 </ul>
             </div>
             <div class="card-body text-center">
-                <form asp-action="Create" asp-controller="CarBrands">
+                <form asp-action="Create" asp-controller="Organizations">
                     <div class="form-group">
-                        <label asp-for="CarBrand">Название</label>
-                        <input type="text" asp-for="CarBrand" class="form-control" />
-                        <span class="text-danger small" asp-validation-for="CarBrand"></span>
+                        <label asp-for="OrganizationName">Название</label>
+                        <input type="text" asp-for="OrganizationName" class="form-control" />
+                        <span class="text-danger small" asp-validation-for="OrganizationName"></span>
 
                     </div>
                     <div style="margin-top: 10px">

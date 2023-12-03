@@ -239,9 +239,9 @@ namespace Cargo.Controllers
             }
             var items = cargoTransportations.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             PageViewModel pageViewModel = new PageViewModel(cargoTransportations.Count, page, pageSize);
-            FilterCargoTransportationsViewModel filterTestsViewModel = new FilterCargoTransportationsViewModel(cars,  drivers, loads, organizations, 
+            FilterCargoTransportationsViewModel filterCargoViewModel = new FilterCargoTransportationsViewModel(cars,  drivers, loads, organizations, 
                  car, startDistance,endDistance,driver,load,organization,startTariff,endTariff,startDate,endDate);
-            var viewModel = new CargoTransportationsViewModel(items, pageViewModel, filterTestsViewModel);
+            var viewModel = new CargoTransportationsViewModel(items, pageViewModel, filterCargoViewModel);
 
             return View(viewModel);
         }
