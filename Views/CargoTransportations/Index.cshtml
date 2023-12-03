@@ -40,15 +40,15 @@
                         
                         <div class="col-2">
                             <label for="driver">Водители</label>
-                            <select class="form-control" id="driver" asp-items="Model.FilterCargoTransportationsViewModel.Drivers"></select>
+                            <select class="form-control" id="driver" name="driver" asp-items="Model.FilterCargoTransportationsViewModel.Drivers"></select>
                         </div>
                         <div class="col-2">
                             <label for="organization">Организации</label>
-                            <select class="form-control" id="organization" asp-items="Model.FilterCargoTransportationsViewModel.Organizations"></select>
+                            <select class="form-control" id="organization" name="organization" asp-items="Model.FilterCargoTransportationsViewModel.Organizations"></select>
                         </div>
                         <div class="col-2">
                             <label for="load">Груз</label>
-                            <select class="form-control" id="load" asp-items="Model.FilterCargoTransportationsViewModel.Loads"></select>
+                            <select class="form-control" id="load" name="load" asp-items="Model.FilterCargoTransportationsViewModel.Loads"></select>
                         </div>
                        
                        
@@ -57,27 +57,27 @@
                         
                         <div class="col">
                             <label for="distance">Расстояние от</label>
-                            <input type="number" class="form-control" value="@Model.FilterCargoTransportationsViewModel.SelectedStartDistance"></input>
+                            <input type="number" class="form-control" name="startDistance" id="startDistance" value="@Model.FilterCargoTransportationsViewModel.SelectedStartDistance"></input>
                         </div>
                         <div class="col">
                             <label for="distance">Расстояние до</label>
-                            <input type="number" class="form-control" value="Model.FilterCargoTransportationsViewModel.SelectedEndDistance"></input>
+                            <input type="number" class="form-control" name="endDistance" id="endDistance" value="@Model.FilterCargoTransportationsViewModel.SelectedEndDistance"></input>
                         </div>
                         <div class="col">
                             <label for="transportationTariff">Тариф от</label>
-                            <input type="number" class="form-control" value="Model.FilterCargoTransportationsViewModel.SelectedStartTransportationTariffId"></input>
+                            <input type="number" class="form-control" id="startTariff" name="startTariff" value="@Model.FilterCargoTransportationsViewModel.SelectedStartTransportationTariff"></input>
                         </div>
                         <div class="col">
                             <label for="transportationTariff">Тариф до</label>
-                            <input type="number" class="form-control" value="Model.FilterCargoTransportationsViewModel.SelectedEndTransportationTariffId"></input>
+                            <input type="number" class="form-control" id="endTariff" name="endTariff" value="@Model.FilterCargoTransportationsViewModel.SelectedEndTransportationTariff"></input>
                         </div>
                         <div class="col">
                             <label for="date">Начальная дата</label>
-                            <input type="date" class="form-control" value="@Model.FilterCargoTransportationsViewModel.SelectedStartDate" />
+                            <input type="date" class="form-control" id="startDate" name="startDate" value="@Model.FilterCargoTransportationsViewModel.SelectedStartDate.ToString("yyyy-MM-dd")"   />
                         </div>
                         <div class="col">
                             <label for="date">Конечная дата</label>
-                            <input type="date" class="form-control" value="@Model.FilterCargoTransportationsViewModel.SelectedEndDate" />
+                            <input type="date" class="form-control" id="endDate" name="endDate" value="@Model.FilterCargoTransportationsViewModel.SelectedEndDate.ToString("yyyy-MM-dd")"   />
                         </div>
                         <div class="card-body">
                             <div class="form-row float-right" style="margin-top:10px; margin-bottom:10px">

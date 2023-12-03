@@ -92,12 +92,7 @@ namespace Cargo.Controllers
 
             int car, driver, organization,load,startTariff, endTariff, startDistance,endDistance, page;
             DateTime startDate, endDate;
-            startDistance = 0;
-            endTariff = 0;
-            endDistance = 0;
-            startTariff = 0;
-            endDate= DateTime.Now;
-            startDate = DateTime.Now;
+
             if (Request.Cookies.TryGetValue("carNumber", out string carNumber))
             {
                 car = Convert.ToInt32(carNumber);
@@ -106,22 +101,44 @@ namespace Cargo.Controllers
             {
                 car = 0;
             }
-            //if (Request.Cookies.TryGetValue("DistanceString", out string distanceString))
-            //{
-            //    distance = Convert.ToInt32(distanceString);
-            //}
-            //else
-            //{
-            //    distance = 0;
-            //}
-            //if (Request.Cookies.TryGetValue("DistanceString", out string distanceString))
-            //{
-            //    distance = Convert.ToInt32(distanceString);
-            //}
-            //else
-            //{
-            //    distance = 0;
-            //}
+
+
+
+            if (Request.Cookies.TryGetValue("StartDistanceString", out string startDistanceString))
+            {
+                startDistance = Convert.ToInt32(startDistanceString);
+            }
+            else
+            {
+                startDistance = 0;
+            }
+
+            if (Request.Cookies.TryGetValue("EndDistanceString", out string endDistanceString))
+            {
+                endDistance = Convert.ToInt32(endDistanceString);
+            }
+            else
+            {
+                endDistance = 10000;
+            }
+
+            if (Request.Cookies.TryGetValue("StartDateString", out string startDateString))
+            {
+                startDate = DateTime.Parse(startDateString);
+            }
+            else
+            {
+                startDate = default(DateTime);
+            }
+
+            if (Request.Cookies.TryGetValue("EndDateString", out string endDateString))
+            {
+                endDate = DateTime.Parse(endDateString);
+            }
+            else
+            {
+                endDate = DateTime.Now;
+            }
 
 
             if (Request.Cookies.TryGetValue("DriverString", out string driverString))
@@ -149,19 +166,69 @@ namespace Cargo.Controllers
                 load = 0;
             }
 
-            //if (Request.Cookies.TryGetValue("TariffString", out string tariffString))
-            //{
-            //    tariff = Convert.ToInt32(tariffString);
-            //}
-            //else
-            //{
-            //    tariff = 0;
-            //}
+            if (Request.Cookies.TryGetValue("StartTariffString", out string startTariffString))
+            {
+                startTariff = Convert.ToInt32(startTariffString);
+            }
+            else
+            {
+                startTariff = 0;
+            }
+            
+            if (Request.Cookies.TryGetValue("EndTariffString", out string endTariffString))
+            {
+                endTariff = Convert.ToInt32(endTariffString);
+            }
+            else
+            {
+                endTariff = 1000;
+            }
 
             if (car != null && car != 0)
             {
                 cargoTransportations = cargoTransportations.Where(t => t.CarId == car).ToList();
             }
+            if (driver != null && driver != 0)
+            {
+                cargoTransportations = cargoTransportations.Where(t => t.DriverId == driver).ToList();
+            }
+            if (organization != null && organization != 0)
+            {
+                cargoTransportations = cargoTransportations.Where(t => t.OrganizationId == organization).ToList();
+            }
+            if (load != null && load != 0)
+            {
+                cargoTransportations = cargoTransportations.Where(t => t.LoadId == load).ToList();
+            }
+
+            if (startTariff != null && startTariff >= 0)
+            {
+                cargoTransportations = cargoTransportations.Where(t => t.TransportationTariff.TariffPerTKm >= startTariff).Where(t => t.TransportationTariff.TariffPerM3Km >= startTariff).ToList();
+            }
+            if (endTariff >= 0 && startTariff <= endTariff && endTariff != null)
+            {
+                cargoTransportations = cargoTransportations.Where(t => t.TransportationTariff.TariffPerTKm <= endTariff).Where(t => t.TransportationTariff.TariffPerM3Km <= endTariff).ToList();
+            }
+
+            if (startDistance != null && startDistance >= 0)
+            {
+                cargoTransportations = cargoTransportations.Where(t => t.Distance.Distance1 >= startDistance).ToList();
+            }
+            if (endDistance >= 0 && startDistance <= endDistance && endDistance != null)
+            {
+                cargoTransportations = cargoTransportations.Where(t => t.Distance.Distance1 <= endDistance).ToList();
+            }
+
+            if (startDate != null && startDate >= default(DateTime))
+            {
+                cargoTransportations = cargoTransportations.Where(t => t.Date >= startDate).ToList();
+            }
+            if (endDate >= default(DateTime) && startDate <= endDate && endDate != null)
+            {
+                cargoTransportations = cargoTransportations.Where(t => t.Date <= endDate).ToList();
+            }
+
+
             if (Request.Cookies.TryGetValue("cargoPage", out string pageString))
             {
                 page = Convert.ToInt32(pageString);
@@ -248,19 +315,39 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateIndex(int car = 0,int driver =0, int load = 0, int organiztion =0, int page = 1)
+        public async Task<IActionResult> UpdateIndex(int car = 0, int driver = 0, int load = 0, int organization = 0, int endTariff = 1000, int startTariff = 0, int startDistance = 0,
+            int endDistance = 10000, DateTime startDate = default(DateTime), DateTime endDate = default(DateTime), int page = 1)
         {
             Response.Cookies.Delete("CarNumber");
             Response.Cookies.Append("CarNumber", car.ToString());
 
-            Response.Cookies.Delete("DistanceCount");
-            Response.Cookies.Append("DistanceCount", car.ToString());
+            Response.Cookies.Delete("DriverString");
+            Response.Cookies.Append("DriverString", driver.ToString());
+
+            Response.Cookies.Delete("OrganizationString");
+            Response.Cookies.Append("OrganizationString", organization.ToString());
+
+            Response.Cookies.Delete("LoadString");
+            Response.Cookies.Append("LoadString", load.ToString());
+
+            Response.Cookies.Delete("StartTariffString");
+            Response.Cookies.Append("StartTariffString", startTariff.ToString());
+            Response.Cookies.Delete("EndTariffString");
+            Response.Cookies.Append("EndTariffString", endTariff.ToString());
+
+            Response.Cookies.Delete("StartDistanceString");
+            Response.Cookies.Append("StartDistanceString", startDistance.ToString());
+            Response.Cookies.Delete("EndDistanceString");
+            Response.Cookies.Append("EndDistanceString", endDistance.ToString());
+
+            Response.Cookies.Delete("StartDateString");
+            Response.Cookies.Append("StartDateString", startDate.ToString());
+            Response.Cookies.Delete("EndDateString");
+            Response.Cookies.Append("EndDateString", endDate.ToString());
 
             Response.Cookies.Delete("CargoPage");
             Response.Cookies.Append("CargoPage", page.ToString());
 
-
-            
 
             return RedirectToAction("Index");
         }

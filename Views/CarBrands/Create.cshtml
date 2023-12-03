@@ -1,4 +1,5 @@
-﻿@* @{
+﻿
+@{
 
     ViewBag.Title = "Добавление марки машины";
 }
@@ -23,11 +24,10 @@
                 </ul>
             </div>
             <div class="card-body text-center">
-                <form asp-action="Create" asp-controller="Topics">
+                <form asp-action="Create" asp-controller="CarBrands">
                     <div class="form-group">
-                        <label asp-for="Name">Название</label>
-                        <input type="text" asp-for="Name" class="form-control"/>
-                        <span class="text-danger small" asp-validation-for="Name"></span>
+                        <label asp-for="CarBrand">Марка</label>
+                        <input type="text" asp-for="CarBrand" class="form-control" />
                     </div>
                     <div style="margin-top: 10px">
                         <input type="submit" class="btn btn-outline-secondary" value="Сохранить" />
@@ -38,4 +38,4 @@
     </div>
 
 </body>
-</html>  *@
+</html>  

@@ -20,8 +20,8 @@ namespace Cargo.ViewModels
             SelectedDriverId = driver;
             SelectedLoadId = load;
             SelectedOrganizationId = organization;
-            SelectedStartTransportationTariffId = startTariff;
-            SelectedEndTransportationTariffId = endTariff;
+            SelectedStartTransportationTariff = startTariff;
+            SelectedEndTransportationTariff = endTariff;
 
             SelectedStartDate = startDate;
             SelectedEndDate = endDate;
@@ -57,8 +57,8 @@ namespace Cargo.ViewModels
 
         public int SelectedLoadId { get; set; }
 
-        public int SelectedStartTransportationTariffId { get; set; }
-        public int SelectedEndTransportationTariffId { get; set; }
+        public int SelectedStartTransportationTariff { get; set; }
+        public int SelectedEndTransportationTariff { get; set; }
 
     }
 }

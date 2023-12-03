@@ -7,13 +7,14 @@ namespace Cargo.ViewModels
     {
         public IEnumerable<TransportationTariff> TransportationTariffs{ get; }
         public PageViewModel PageViewModel { get; }
-
+        public FilterTransportationTariffsViewModel FilterTransportationTariffsViewModel { get; }
 
         //public ApplicationUser ApplicationUser { get; }
-        public TransportationTariffsViewModel(IEnumerable<TransportationTariff> transportationTariffs, PageViewModel viewModel)
+        public TransportationTariffsViewModel(IEnumerable<TransportationTariff> transportationTariffs, PageViewModel viewModel, FilterTransportationTariffsViewModel filterTransportationTariffsViewModel)
         {
             TransportationTariffs = transportationTariffs;
             PageViewModel = viewModel;
+            FilterTransportationTariffsViewModel = filterTransportationTariffsViewModel;
         }
 
     }
