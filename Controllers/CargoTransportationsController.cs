@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using NuGet.Packaging.Signing;
 using System.Collections.Generic;
 using System.Drawing.Printing;
@@ -17,11 +18,14 @@ namespace Cargo.Controllers
     {
         private readonly CargoContext _db;
 
+
+
         public CargoTransportationsController(CargoContext db)
         {
             _db = db;
         }
         // GET: /CargoTransportations/Create
+        [Authorize]
         public IActionResult Create()
         {
             List<Car> cars = _db.Cars.ToList();
@@ -43,6 +47,7 @@ namespace Cargo.Controllers
 
         // POST: /TransportationTariffs/Create
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateCargoTransportationsViewModel model)
         {
@@ -71,6 +76,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
+        [Authorize]
         public IActionResult Index()
         {
             int pageSize = 10;
@@ -81,7 +87,7 @@ namespace Cargo.Controllers
             List<Organization> organizations = _db.Organizations.ToList();
             List<TransportationTariff> transportationTariffs = _db.TransportationTariffs.ToList();
             DateTime date = DateTime.Now;
-            cars.Insert(0, new Car { RegistrationNumber = "Все", CarId = 0 });
+            
 
             drivers.Insert(0, new Driver { FullName = "Все", DriverId = 0 });
             loads.Insert(0, new Load { LoadName = "Все", LoadId = 0 });
@@ -89,7 +95,7 @@ namespace Cargo.Controllers
 
 
             List<CargoTransportation> cargoTransportations = _db.CargoTransportations.ToList();
-
+            string registrationNumber;
             int car, driver, organization,load,startTariff, endTariff, startDistance,endDistance, page;
             DateTime startDate, endDate;
 
@@ -102,7 +108,10 @@ namespace Cargo.Controllers
                 car = 0;
             }
 
-
+            if (!Request.Cookies.TryGetValue("RegistrationNumber", out registrationNumber))
+            {
+                registrationNumber = "";
+            }
 
             if (Request.Cookies.TryGetValue("StartDistanceString", out string startDistanceString))
             {
@@ -183,7 +192,10 @@ namespace Cargo.Controllers
             {
                 endTariff = 1000;
             }
-
+            if (!string.IsNullOrEmpty(registrationNumber))
+            {
+                cargoTransportations = cargoTransportations.Where(u => u.Car.RegistrationNumber.ToUpperInvariant().Contains(registrationNumber.ToUpperInvariant())).ToList();
+            }
             if (car != null && car != 0)
             {
                 cargoTransportations = cargoTransportations.Where(t => t.CarId == car).ToList();
@@ -227,7 +239,7 @@ namespace Cargo.Controllers
             {
                 cargoTransportations = cargoTransportations.Where(t => t.Date <= endDate).ToList();
             }
-
+           
 
             if (Request.Cookies.TryGetValue("cargoPage", out string pageString))
             {
@@ -239,13 +251,13 @@ namespace Cargo.Controllers
             }
             var items = cargoTransportations.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             PageViewModel pageViewModel = new PageViewModel(cargoTransportations.Count, page, pageSize);
-            FilterCargoTransportationsViewModel filterCargoViewModel = new FilterCargoTransportationsViewModel(cars,  drivers, loads, organizations, 
-                 car, startDistance,endDistance,driver,load,organization,startTariff,endTariff,startDate,endDate);
+            FilterCargoTransportationsViewModel filterCargoViewModel = new FilterCargoTransportationsViewModel( drivers, loads, organizations, 
+                 registrationNumber, startDistance,endDistance,driver,load,organization,startTariff,endTariff,startDate,endDate);
             var viewModel = new CargoTransportationsViewModel(items, pageViewModel, filterCargoViewModel);
 
             return View(viewModel);
         }
-
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             CargoTransportation cargo = _db.CargoTransportations.FirstOrDefault(t => t.DocumentId == id);
@@ -271,6 +283,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(EditCargoTransportationsViewModel model)
         {
             if (ModelState.IsValid)
@@ -315,7 +328,8 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateIndex(int car = 0, int driver = 0, int load = 0, int organization = 0, int endTariff = 1000, int startTariff = 0, int startDistance = 0,
+        [Authorize]
+        public async Task<IActionResult> UpdateIndex(string registrationNumber = "", int car = 0, int driver = 0, int load = 0, int organization = 0, int endTariff = 1000, int startTariff = 0, int startDistance = 0,
             int endDistance = 10000, DateTime startDate = default(DateTime), DateTime endDate = default(DateTime), int page = 1)
         {
 
@@ -323,6 +337,8 @@ namespace Cargo.Controllers
             {
                 endDate = new DateTime(2030, 1, 1);
             }
+            Response.Cookies.Delete("RegistrationNumber");
+            Response.Cookies.Append("RegistrationNumber", registrationNumber);
 
             Response.Cookies.Delete("CarNumber");
             Response.Cookies.Append("CarNumber", car.ToString());
@@ -359,6 +375,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             CargoTransportation cargoTransportation = _db.CargoTransportations.FirstOrDefault(t => t.DocumentId == id);

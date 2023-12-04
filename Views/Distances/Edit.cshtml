@@ -1,14 +1,14 @@
-﻿@model Cargo.ViewModels.EditCarsViewModel
+﻿@model Cargo.ViewModels.EditDistancesViewModel
 
 @{
-    ViewBag.Title = "Изменение машин";
+    ViewBag.Title = "Изменение дистанций";
 }
 
 <!DOCTYPE html>
 <html>
 <body>
     <div class="container">
-        <form asp-action="Edit" asp-controller="Cars">
+        <form asp-action="Edit" asp-controller="Distances">
 
             <div class="card">
                 <div class="card-header text-center bg-light">
@@ -30,23 +30,17 @@
                     </span>
                     <div class="form-group">
                         <div class="col">
-                            <label for="carBrand">Марка</label>
-                            <select id="carBrand" class="form-control" asp-for="SelectedCarBrandId" asp-items="Model.CarBrands"></select>
+                            <label for="departureSettlement">Пункт отправления</label>
+                            <select id="departureSettlement" class="form-control" asp-for="SelectedDeparturesSettlementId" asp-items="Model.DeparturesSettlements"></select>
                         </div>
                         <div class="col">
-                            <label asp-for="LiftingCapacity">Грузоподъемность</label>
-                            <input type="number" asp-for="LiftingCapacity" class="form-control" />
-                            <span class="text-danger small" asp-validation-for="LiftingCapacity"></span>
+                            <label for="arrivalSettlement">Пункт прибытия</label>
+                            <select id="arrivalSettlement" class="form-control" asp-for="SelectedArrivalSettlementId" asp-items="Model.ArrivalSettlements"></select>
                         </div>
                         <div class="col">
-                            <label asp-for="BodyVolume">Объём</label>
-                            <input type="number" asp-for="BodyVolume" class="form-control" />
-                            <span class="text-danger small" asp-validation-for="BodyVolume"></span>
-                        </div>
-                        <div class="col">
-                            <label asp-for="RegistrationNumber">Номер</label>
-                            <input type="text" asp-for="RegistrationNumber" class="form-control" />
-                            <span class="text-danger small" asp-validation-for="RegistrationNumber"></span>
+                            <label asp-for="SelectedDistance">Дистанция</label>
+                            <input type="number" asp-for="SelectedDistance" class="form-control" />
+                            <span class="text-danger small" asp-validation-for="SelectedDistance"></span>
                         </div>
 
 

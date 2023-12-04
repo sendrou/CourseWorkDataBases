@@ -99,6 +99,7 @@ namespace Cargo.Controllers
 
             List<Driver> drivers = _db.Drivers.ToList();
 
+            List<CargoTransportation> cargo = _db.CargoTransportations.ToList();
 
             int page;
             string driverName, passportDetails;
@@ -112,7 +113,7 @@ namespace Cargo.Controllers
             }
 
 
-
+            DateTime startDate, endDate;
 
             if (!string.IsNullOrEmpty(driverName))
             {
@@ -122,7 +123,23 @@ namespace Cargo.Controllers
             {
                 drivers = drivers.Where(u => u.PassportDetails.ToUpperInvariant().Contains(passportDetails.ToUpperInvariant())).ToList();
             }
+            if (Request.Cookies.TryGetValue("StartDateString", out string startDateString))
+            {
+                startDate = DateTime.Parse(startDateString);
+            }
+            else
+            {
+                startDate = default(DateTime);
+            }
 
+            if (Request.Cookies.TryGetValue("EndDateString", out string endDateString))
+            {
+                endDate = DateTime.Parse(endDateString);
+            }
+            else
+            {
+                endDate = DateTime.Now;
+            }
 
 
             if (Request.Cookies.TryGetValue("DriverPage", out string pageString))
@@ -135,14 +152,23 @@ namespace Cargo.Controllers
             }
             var items = drivers.Skip((page - 1) * pageSize).Take(pageSize).ToList();
             PageViewModel pageViewModel = new PageViewModel(drivers.Count, page, pageSize);
-            FilterDriversViewModel filterDriversViewModel = new FilterDriversViewModel(driverName,passportDetails);
-            var viewModel = new DriversViewModel(items, pageViewModel, filterDriversViewModel);
+            FilterDriversViewModel filterDriversViewModel = new FilterDriversViewModel(driverName,passportDetails,startDate,endDate);
+            var viewModel = new DriversViewModel(items,cargo, pageViewModel, filterDriversViewModel);
 
             return View(viewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> UpdateIndex(string driverName = "",string passportDetails="", int page = 1)
+        public async Task<IActionResult> UpdateIndex(string driverName = "",string passportDetails="", DateTime startDate = default(DateTime), DateTime endDate = default(DateTime), int page = 1)
         {
+        
+                if (endDate == default(DateTime))
+                {
+                    endDate = new DateTime(2030, 1, 1);
+                }
+            Response.Cookies.Delete("StartDateString");
+            Response.Cookies.Append("StartDateString", startDate.ToString());
+            Response.Cookies.Delete("EndDateString");
+            Response.Cookies.Append("EndDateString", endDate.ToString());
 
 
             Response.Cookies.Delete("DriverName");

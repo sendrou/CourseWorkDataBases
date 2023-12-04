@@ -8,12 +8,12 @@ namespace Cargo.ViewModels
 {
     public class FilterCargoTransportationsViewModel
     {
-        public FilterCargoTransportationsViewModel(List<Car> cars,  List<Driver> drivers, List<Load> loads, List<Organization> organizations,  int car, int startDistance, int endDistance, int driver, int load, int organization, int startTariff, int endTariff, DateTime startDate,DateTime endDate)
+        public FilterCargoTransportationsViewModel(  List<Driver> drivers, List<Load> loads, List<Organization> organizations,  string registrationNumber, int startDistance, int endDistance, int driver, int load, int organization, int startTariff, int endTariff, DateTime startDate,DateTime endDate)
         {
 
 
-            Cars = new SelectList(cars, "CarId", "RegistrationNumber", car);
-            SelectedCarId = car;
+
+            SelectedRegistrationNumber = registrationNumber;
             SelectedStartDistance = startDistance;
             SelectedEndDistance = endDistance;
 
@@ -49,7 +49,7 @@ namespace Cargo.ViewModels
 
         public int SelectedCarId { get; set; }
 
-
+        public string SelectedRegistrationNumber { get; set; }
         public int SelectedStartDistance { get; set; }
         public int SelectedEndDistance { get; set; }
 

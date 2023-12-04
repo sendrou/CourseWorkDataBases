@@ -1,0 +1,52 @@
+﻿@{
+
+    ViewBag.Title = "Добавление дистанций";
+}
+@model Cargo.ViewModels.CreateDistancesViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Distance</title>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="Index">Поиск</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active">Добавление</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body text-center">
+                <form asp-action="Create" asp-controller="Distances">
+                    <div class="form-group">
+                        <div class="col">
+                            <label for="departureSettlement">Пункт отправления</label>
+                            <select id="departureSettlement" class="form-control" asp-for="DeparturesSettlementId" asp-items="Model.DeparturesSettlements"></select>
+                        </div>
+                        <div class="col">
+                            <label for="arrivalSettlement">Пункт прибытия</label>
+                            <select id="arrivalSettlement" class="form-control" asp-for="ArrivalSettlementId" asp-items="Model.ArrivalSettlements"></select>
+                        </div>
+                        <div class="col">
+                            <label asp-for="Distance">Дистанция</label>
+                            <input type="number" asp-for="Distance" class="form-control" />
+                            <span class="text-danger small" asp-validation-for="Distance"></span>
+                        </div>
+                        
+                    </div>
+                    <div style="margin-top: 10px">
+                        <input type="submit" class="btn btn-outline-secondary" value="Сохранить" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>  

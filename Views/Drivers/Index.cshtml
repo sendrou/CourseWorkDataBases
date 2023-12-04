@@ -42,7 +42,14 @@
                             <label for="passportDetails">Паспорт</label>
                             <input type="text" class="form-control" id="passportDetails" name="passportDetails" value="@Model.FilterDriversViewModel.SelectedPassportDetails"></input>
                         </div>
-
+                        <div class="col">
+                            <label for="date">Начальная дата</label>
+                            <input type="date" class="form-control" id="startDate" name="startDate" value="@Model.FilterDriversViewModel.SelectedStartDate.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="col">
+                            <label for="date">Конечная дата</label>
+                            <input type="date" class="form-control" id="endDate" name="endDate" value="@Model.FilterDriversViewModel.SelectedEndDate.ToString("yyyy-MM-dd")" />
+                        </div>
                         <div class="card-body">
                             <div class="form-row float-right" style="margin-top:10px; margin-bottom:10px">
                                 <div class="col">
@@ -68,6 +75,7 @@
                         <th>DriverId</th>
                         <th>FullName</th>
                         <th>PassportDetails</th>
+                        <th>DaysWorked</th>
                         <th></th>
                         <th></th>
 
@@ -77,10 +85,17 @@
 
                     @foreach (var driver in Model.Drivers)
                     {
+
+                        DateTime startDate = @Model.FilterDriversViewModel.SelectedStartDate;
+                        // Начальная дата периода
+                        DateTime endDate = @Model.FilterDriversViewModel.SelectedEndDate;
+
+                        int cargoCount = Model.Cargo.Count(ct => ct.DriverId == driver.DriverId && ct.Date >= startDate && ct.Date <= endDate);
                         <tr>
                             <td>@driver.DriverId</td>
                             <td>@driver.FullName</td>
                             <td>@driver.PassportDetails</td>
+                            <td>@cargoCount</td>
                             <td>
                                 <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@driver.DriverId">Изменить</a>
                             </td>
@@ -105,6 +120,8 @@
                         <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber-1)"
                               asp-route-driverName="@(Model.FilterDriversViewModel.SelectedDriverName)"
                               asp-route-passportDetails="@(Model.FilterDriversViewModel.SelectedPassportDetails)"
+                              asp-route-endDate="@(Model.FilterDriversViewModel.SelectedEndDate)"
+                              asp-route-startDate="@(Model.FilterDriversViewModel.SelectedStartDate)"
                               method="post">
 
                             <button type="submit" class="page-link">
@@ -128,6 +145,8 @@
                         <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber+1)"
                               asp-route-driverName="@(Model.FilterDriversViewModel.SelectedDriverName)"
                               asp-route-passportDetails="@(Model.FilterDriversViewModel.SelectedPassportDetails)"
+                              asp-route-endDate="@(Model.FilterDriversViewModel.SelectedEndDate)"
+                              asp-route-startDate="@(Model.FilterDriversViewModel.SelectedStartDate)"
                               method="post">
 
                             <button type="submit" class="page-link">
@@ -156,11 +175,15 @@
             driverName.value = "";
             let passportDetails = document.getElementById("passportDetails");
             passportDetails.value = "";
-
+            let startDate = document.getElementById("startDate");
+            startDate.value = "0001-01-01";
+            let endDate = document.getElementById("endDate");
+            endDate.value = "2030-01-01";
 
             let form = document.getElementById("form");
             form.submit();
         }
+
     </script>
 </body>
 </html>

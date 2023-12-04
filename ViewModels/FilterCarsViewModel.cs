@@ -8,23 +8,29 @@ namespace Cargo.ViewModels
 {
     public class FilterCarsViewModel
     {
-        public FilterCarsViewModel(List<CarBrand> carBrands,int carBrand, int liftingCapacity, int bodyVolume, string registrationNumber)
+        public FilterCarsViewModel(List<CarBrand> carBrands,int carBrand,  int startBodyVolume, int endBodyVolume, int startLiftingCapacity, int endLiftingCapacity, string registrationNumber, DateTime startDate, DateTime endDate)
         {
-            CarBrands = new SelectList(carBrands, "CarId", "RegistrationNumber", carBrand);
-            SelectedBodyVolume = bodyVolume;
+            CarBrands = new SelectList(carBrands, "CarBrandId", "BrandName", carBrand);
+            SelectedStartBodyVolume = startBodyVolume;
+            SelectedEndBodyVolume = endBodyVolume;
             SelectedCarBrandId = carBrand;
-            SelectedLiftingCapacity = liftingCapacity;
+            SelectedStartLiftingCapacity = startLiftingCapacity;
+            SelectedEndLiftingCapacity = endLiftingCapacity;
             SelectedRegistrationNumber = registrationNumber;
-
+            SelectedStartDate = startDate;
+            SelectedEndDate = endDate;
 
 
         }
-        public int SelectedLiftingCapacity { get; set; }
-        public int SelectedBodyVolume { get; set; }
+        public int SelectedStartLiftingCapacity { get; set; }
+        public int SelectedEndLiftingCapacity { get; set; }
+        public int SelectedStartBodyVolume { get; set; }
+        public int SelectedEndBodyVolume { get; set; }
         public string SelectedRegistrationNumber { get; set; }
 
         public SelectList CarBrands { get; }
         public int SelectedCarBrandId { get; set; }
-
+        public DateTime SelectedStartDate { get; set; }
+        public DateTime SelectedEndDate { get; set; }
     }
 }

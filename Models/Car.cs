@@ -7,7 +7,7 @@ public partial class Car
 {
     public int CarId { get; set; }
 
-    public int? CarBrandId { get; set; }
+    public int CarBrandId { get; set; }
 
     public int LiftingCapacity { get; set; }
 

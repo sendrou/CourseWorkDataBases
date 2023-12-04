@@ -2,29 +2,185 @@
 
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-@model IEnumerable<Cargo.Models.Distance>
+@model Cargo.ViewModels.DistancesViewModel
 <!DOCTYPE html>
 <html>
 <head>
-    <title>"Distances"</title>
+    <title>Distances</title>
+    <style>
+        label {
+            white-space: nowrap;
+        }
+    </style>
 </head>
 <body>
-    <table cellpadding="5">
-        <tr>
-            <th>DistanceID</th>
-            <th>DeparturesSettlement</th>
-            <th>ArrivalSettlement</th>
-            <th>Distance</th>
-        </tr>
-        @foreach (var distance in Model)
-        {
-            <tr>
-                <td>@distance.DistanceId</td>
-                <td>@distance.DeparturesSettlement.SettlementName</td>
-                <td>@distance.ArrivalSettlement.SettlementName</td>
-                <td>@distance.Distance1</td>
-            </tr>
+    <div class="container">
+        <div class="card ">
+            <form asp-action="UpdateIndex" method="post" id="form">
+
+                <div class="card-header text-center">
+                    <ul class="nav nav-pills card-header-pills">
+                        <li class="nav-item">
+                            <a class="nav-link active bg-dark">Поиск</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link " asp-action="Create">Добавление</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card-body " style="margin-bottom: -20px">
+
+                    <div class="form-row">
+
+                        <div class="col-2">
+                            <label for="carBrand">Пункт отправления</label>
+                            <input type="text" class="form-control" id="departuresSettlement" name="departuresSettlementName" value="@Model.FilterDistancesViewModel.DepartureSettlementName"></input>
+                        </div>
+
+                        <div class="col-3">
+                            <label for="arrivalSettlement">Пункт прибытия</label>
+                            <input type="text" class="form-control" id="arrivalSettlement" name="arrivalSettlementName" value="@Model.FilterDistancesViewModel.ArrivalSettlementName"></input>
+                        </div>
+                        <div class="col">
+                            <label for="distance">Расстояние от</label>
+                            <input type="number" class="form-control" name="startDistance" id="startDistance" value="@Model.FilterDistancesViewModel.SelectedStartDistance"></input>
+                        </div>
+                        <div class="col">
+                            <label for="distance">Расстояние до</label>
+                            <input type="number" class="form-control" name="endDistance" id="endDistance" value="@Model.FilterDistancesViewModel.SelectedEndDistance"></input>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-row float-right" style="margin-top:10px; margin-bottom:10px">
+                                <div class="col">
+                                    <input class="btn btn-dark" value="Очистить" type="button" onclick="clearInputs()" />
+                                </div>
+                                <div class="col">
+                                    <input class="btn btn-dark" type="submit" value="Найти" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                        
+                    
+
+
+                </div>
+            </form>
+        </div>
+        <div class="card " style="margin-top: 20px; margin-bottom:-20px;">
+
+            <table class="table table-border " style="margin-bottom:-1px;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>DistanceID</th>
+                        <th>DeparturesSettlement</th>
+                        <th>ArrivalSettlement</th>
+                        <th>Distance</th>
+
+                        <th></th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var distance in Model.Distances)
+                    {
+                        <tr>
+                            <td>@distance.DistanceId</td>
+                            <td>@distance.DeparturesSettlement.SettlementName</td>
+                            <td>@distance.ArrivalSettlement.SettlementName</td>
+                            <td>@distance.Distance1</td>
+
+                            <td>
+                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@distance.DistanceId">Изменить</a>
+                            </td>
+                            <td>
+                                <form asp-action="Delete" asp-route-id="@distance.DistanceId" method="post">
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        Удалить
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div style="margin-top: 100px; margin-bottom:100px"></div>
+        <nav style="margin-top: 10px; margin-bottom:50px">
+            <ul class="pagination justify-content-end">
+                @if (Model.PageViewModel.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber-1)"
+                              asp-route-departuresSettlement="@(Model.FilterDistancesViewModel.DepartureSettlementName)"
+                              asp-route-arrivalSettlement="@(Model.FilterDistancesViewModel.ArrivalSettlementName)"
+                              asp-route-startDistance="@(Model.FilterDistancesViewModel.SelectedStartDistance)"
+                              asp-route-endDistance="@(Model.FilterDistancesViewModel.SelectedEndDistance)"
+                              method="post">
+                            
+                            <button type="submit" class="page-link">
+                                Предыдущая
+                            </button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <button type="submit" class="page-link">
+                            Предыдущая
+                        </button>
+                    </li>
+                }
+
+                @if (Model.PageViewModel.HasNextPage)
+                {
+                    <li class="page-item">
+                        <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber+1)"
+                              asp-route-departuresSettlement="@(Model.FilterDistancesViewModel.DepartureSettlementName)"
+                              asp-route-arrivalSettlement="@(Model.FilterDistancesViewModel.ArrivalSettlementName)"
+                              asp-route-startDistance="@(Model.FilterDistancesViewModel.SelectedStartDistance)"
+                              asp-route-endDistance="@(Model.FilterDistancesViewModel.SelectedEndDistance)"
+                              method="post">
+                           
+                            <button type="submit" class="page-link">
+                                Следующая
+                            </button>
+                        </form>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <button type="submit" class="page-link">
+                            Следующая
+                        </button>
+                    </li>
+                }
+            </ul>
+        </nav>
+        <div style="margin-top: 100px; margin-bottom:100px"></div>
+
+
+    </div>
+    <script>
+        function clearInputs() {
+            let endDistance = document.getElementById("endDistance");
+            endDistance.value = 10000;
+            let startDistance = document.getElementById("startDistance");
+            startDistance.value = 0;
+
+            let arrivalSettlement = document.getElementById("arrivalSettlement");
+            arrivalSettlement.value = "";
+            let departuresSettlement = document.getElementById("departuresSettlement");
+            departuresSettlement.value = "";
+            let form = document.getElementById("form");
+            form.submit();
         }
-    </table>
+    </script>
 </body>
 </html>

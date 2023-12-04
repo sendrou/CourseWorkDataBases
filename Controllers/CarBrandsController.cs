@@ -3,6 +3,7 @@ using Cargo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Cargo.Controllers
 {
@@ -11,10 +12,11 @@ namespace Cargo.Controllers
     {
 
         private readonly CargoContext _db;
-
-        public CarBrandsController(CargoContext db)
+        private readonly IMemoryCache _cache;
+        public CarBrandsController(CargoContext db, IMemoryCache cache)
         {
             _db = db;
+            _cache = cache;
         }
 
         // GET: /Settlements/Create
@@ -39,6 +41,7 @@ namespace Cargo.Controllers
                 // Save the tariff to the database
                 _db.CarBrands.Add(carBrand);
                 _db.SaveChanges();
+                _cache.Remove("carBrands");
 
                 return RedirectToAction("Index");
             }
@@ -78,6 +81,7 @@ namespace Cargo.Controllers
 
 
                     _db.SaveChanges();
+                    _cache.Remove("carBrands");
 
 
                     return RedirectToAction("Index");
@@ -95,9 +99,24 @@ namespace Cargo.Controllers
         {
             int pageSize = 10;
 
-            List<CarBrand> carBrands = _db.CarBrands.ToList();
+            //List<CarBrand> carBrands = _db.CarBrands.ToList();
 
+            _cache.TryGetValue("carBrands", out List<CarBrand> carBrands);
+            if (carBrands == null)
+            {
+                carBrands = _db.CarBrands.ToList();
 
+                if (carBrands != null)
+                {
+                    _cache.Set("carBrands", carBrands, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(5)));
+                }
+
+                Console.WriteLine("Данные были взяти из памяти.");
+            }
+            else
+            {
+                Console.WriteLine("Данные были взяти их кэша.");
+            }
             int page;
             string brandName;
             if (!Request.Cookies.TryGetValue("BrandName", out brandName))
@@ -159,6 +178,7 @@ namespace Cargo.Controllers
             {
                 _db.CarBrands.Remove(carBrand);
                 _db.SaveChanges();
+                _cache.Remove("carBrands");
             }
 
             return RedirectToAction("Index");

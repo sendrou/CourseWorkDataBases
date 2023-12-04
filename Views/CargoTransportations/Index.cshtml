@@ -34,8 +34,8 @@
                 <div class="card-body " style="margin-bottom: -20px">
                     <div class="form-row">
                         <div class="col-2">
-                            <label for="cars">Машины</label>
-                            <select id="car" class="form-control" name="car" asp-items="Model.FilterCargoTransportationsViewModel.Cars"></select>
+                            <label for="registrationNumber">Номер</label>
+                            <input type="text" class="form-control" id="registrationNumber" name="registrationNumber" value="@Model.FilterCargoTransportationsViewModel.SelectedRegistrationNumber"></input>
                         </div>
                         
                         <div class="col-2">
@@ -101,14 +101,15 @@
                 <table class="table table-border " style="margin-bottom:-1px;">
                     <thead class="thead-dark">
                         <tr>
-                            <th>DocumentID</th>
+                            <th>ID</th>
                             <th>Date</th>
                             <th>Organization</th>
-                            <th>Distance</th>
+                            <th>KM</th>
                             <th>Driver</th>
                             <th>Car</th>
                             <th>Load</th>
                             <th>Tariff</th>
+                            <th>Price</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -118,7 +119,8 @@
                         @foreach (var cargo in Model.CargoTransportations)
                         {
                             string formattedDate = cargo.Date != null ? $"{cargo.Date.Day:00}.{cargo.Date.Month:00}.{cargo.Date.Year}" : string.Empty;
-                            <tr>
+                        int price = cargo.TransportationTariff.TariffPerTKm * cargo.Distance.Distance1 * cargo.Load.Weight + cargo.TransportationTariff.TariffPerM3Km * cargo.Load.Volume * cargo.Distance.Distance1;
+                        <tr>
                                 <td>@cargo.DocumentId</td>
                                 <td>@formattedDate</td>
                                 <td>@cargo.Organization.OrganizationName</td>
@@ -126,7 +128,8 @@
                                 <td>@cargo.Driver.FullName</td>
                                 <td>@cargo.Car.RegistrationNumber</td>
                                 <td>@cargo.Load.LoadName</td>
-                                <td>@(cargo.TransportationTariff.TariffPerTKm.ToString() + " за время*км, " + cargo.TransportationTariff.TariffPerM3Km.ToString() + " за м3*км")</td>
+                                <td>@(cargo.TransportationTariff.TariffPerTKm.ToString() + " время*км, " + cargo.TransportationTariff.TariffPerM3Km.ToString() + " м3*км")</td>
+                                <td>@price</td>
                                 <td>
                                     <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@cargo.DocumentId">Изменить</a>
                                 </td>
@@ -161,7 +164,8 @@
                               asp-route-startDate="@(Model.FilterCargoTransportationsViewModel.SelectedStartDate)"
                               asp-route-endTariff="@(Model.FilterCargoTransportationsViewModel.SelectedEndTransportationTariff)"
                               asp-route-startTariff="@(Model.FilterCargoTransportationsViewModel.SelectedStartTransportationTariff)"
-                                  method="post">
+                              asp-route-registrationNumber="@(Model.FilterCargoTransportationsViewModel.SelectedRegistrationNumber)"
+                              method="post">
                                 <button type="submit" class="page-link">
                                     Предыдущая
                                 </button>
@@ -191,7 +195,8 @@
                               asp-route-startDate="@(Model.FilterCargoTransportationsViewModel.SelectedStartDate)"
                               asp-route-endTariff="@(Model.FilterCargoTransportationsViewModel.SelectedEndTransportationTariff)"
                               asp-route-startTariff="@(Model.FilterCargoTransportationsViewModel.SelectedStartTransportationTariff)"
-                                  method="post">
+                              asp-route-registrationNumber="@(Model.FilterCargoTransportationsViewModel.SelectedRegistrationNumber)"
+                              method="post">
 
                                 <button type="submit" class="page-link">
                                     Следующая
@@ -230,6 +235,8 @@
 
             let load = document.getElementById("load");
             load.value = 0;
+            let registrationNumber = document.getElementById("registrationNumber");
+            registrationNumber.value = "";
             let organization = document.getElementById("organization");
             organization.value = 0;
             let driver = document.getElementById("driver");

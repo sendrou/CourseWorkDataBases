@@ -2,11 +2,11 @@
 
     Layout = "/Views/Shared/_Layout.cshtml";
 }
-@model Cargo.ViewModels.SettlementsViewModel
+@model Cargo.ViewModels.CarsViewModel
 <!DOCTYPE html>
 <html>
 <head>
-    <title>"Settlements"</title>
+    <title>"Cars"</title>
     <style>
         label {
             white-space: nowrap;
@@ -33,13 +33,42 @@
 
                     <div class="form-row">
 
-
-                         <div class="col">
-                            <label for="settlementName">Название</label>
-                            <input type="text" class="form-control" id="settlementName" name="settlementName" value="@Model.FilterSettlementsViewModel.SelectedSettlementName"></input>
+                        <div class="col-2">
+                            <label for="carBrand">Марки</label>
+                            <select id="carBrand" class="form-control" name="carBrand" asp-items="Model.FilterCarsViewModel.CarBrands"></select>
                         </div>
-                
 
+                        <div class="col-3">
+                            <label for="startLiftingCapacity">Грузоподъемность от</label>
+                            <input type="number" class="form-control" id="startLiftingCapacity" name="startLiftingCapacity" value="@Model.FilterCarsViewModel.SelectedStartLiftingCapacity"></input>
+                        </div>
+                        <div class="col-3">
+                            <label for="endLiftingCapacity">Грузоподъемность до</label>
+                            <input type="number" class="form-control" id="endLiftingCapacity" name="endLiftingCapacity" value="@Model.FilterCarsViewModel.SelectedEndLiftingCapacity"></input>
+                        </div>
+                        <div class="col">
+                            <label for="registrationNumber">Номер</label>
+                            <input type="text" class="form-control" id="registrationNumber" name="registrationNumber" value="@Model.FilterCarsViewModel.SelectedRegistrationNumber"></input>
+                        </div>
+                    </div>
+                        <div class="form-row">
+                            <div class="col">
+                                <label for="startBodyVolume">Объём от</label>
+                                <input type="number" class="form-control" id="startBodyVolume" name="startBodyVolume" value="@Model.FilterCarsViewModel.SelectedStartBodyVolume"></input>
+                            </div>
+                            <div class="col">
+                                <label for="endBodyVolume">Объём до</label>
+                                <input type="number" class="form-control" id="endBodyVolume" name="endBodyVolume" value="@Model.FilterCarsViewModel.SelectedEndBodyVolume"></input>
+                            </div>
+                            
+                        <div class="col">
+                            <label for="date">Начальная дата</label>
+                            <input type="date" class="form-control" id="startDate" name="startDate" value="@Model.FilterCarsViewModel.SelectedStartDate.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="col">
+                            <label for="date">Конечная дата</label>
+                            <input type="date" class="form-control" id="endDate" name="endDate" value="@Model.FilterCarsViewModel.SelectedEndDate.ToString("yyyy-MM-dd")" />
+                        </div>
                         <div class="card-body">
                             <div class="form-row float-right" style="margin-top:10px; margin-bottom:10px">
                                 <div class="col">
@@ -51,7 +80,9 @@
                             </div>
 
                         </div>
-                    </div>
+                        </div>
+                        
+                    
 
 
                 </div>
@@ -62,8 +93,16 @@
             <table class="table table-border " style="margin-bottom:-1px;">
                 <thead class="thead-dark">
                     <tr>
-                        <th>SettlementId</th>
-                        <th>SettlementName</th>
+                        <th>Id</th>
+                        <th>Brand</th>
+                        <th>Capacity</th>
+                        <th>Volume</th>
+                        <th>Number</th>
+                        <th>Capacity(%)</th>
+                        <th>T*KM</th>
+                        <th>M^3KM</th>
+                        <th>KM</th>
+                        <th>Earn</th>
 
                         <th></th>
                         <th></th>
@@ -72,17 +111,70 @@
                 </thead>
                 <tbody>
 
-                    @foreach (var settlement in Model.Settlements)
+                    @foreach (var car in Model.Cars)
                     {
-                        <tr>
-                            <td>@settlement.SettlementId</td>
-                            <td>@settlement.SettlementName</td>
+                        DateTime startDate = Model.FilterCarsViewModel.SelectedStartDate;
+                        DateTime endDate = Model.FilterCarsViewModel.SelectedEndDate;
+                        int totalCapacity = 0;
+                        int usedCapacity = 0;
+                        foreach (var transportation in Model.Cargo)
+                        {
+                            if (transportation.Date >= startDate && transportation.Date <= endDate)
+                            {
+                                if (transportation.Load != null && transportation.CarId == car.CarId)
+                                {
+                                    usedCapacity += transportation.Load.Weight;
+                                    totalCapacity += car.LiftingCapacity;
+                                }
+                                
+                            }
+                        }
+                        float percentCapacity = 0 ;
+                        if (totalCapacity > 0)
+                        {
+                            percentCapacity = (float)usedCapacity / totalCapacity * 100;
+                        }
+                        int totalDistance = 0;
+                        int totalTKM = 0;
+                        int totalM3KM = 0;
+                        double totalPayment = 0;
 
+                        foreach (var cargo in Model.Cargo)
+                        {
+                            if (cargo.Date >= startDate && cargo.Date <= endDate && cargo.CarId == car.CarId)
+                            {
+                                int distance = cargo.Distance.Distance1;
+
+
+                                double payment = cargo.TransportationTariff.TariffPerTKm * cargo.Distance.Distance1 * cargo.Load.Weight + cargo.TransportationTariff.TariffPerM3Km * cargo.Load.Volume * cargo.Distance.Distance1;
+
+                                totalDistance += distance;
+                                totalTKM += cargo.Load.Weight * cargo.Distance.Distance1;
+                                totalM3KM += cargo.Load.Volume * cargo.Distance.Distance1;
+                                totalPayment += payment;
+                            }
+                            
+                        }
+
+
+
+
+                        <tr>
+                            <td>@car.CarId</td>
+                            <td>@car.CarBrand.BrandName</td>
+                            <td>@car.LiftingCapacity</td>
+                            <td>@car.BodyVolume</td>
+                            <td>@car.RegistrationNumber</td>
+                            <td>@percentCapacity.ToString("0.00")</td>
+                            <td>@totalTKM</td>
+                            <td>@totalM3KM</td>
+                            <td>@totalDistance</td>
+                            <td>@totalPayment</td>
                             <td>
-                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@settlement.SettlementId">Изменить</a>
+                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@car.CarId">Изменить</a>
                             </td>
                             <td>
-                                <form asp-action="Delete" asp-route-id="@settlement.SettlementId" method="post">
+                                <form asp-action="Delete" asp-route-id="@car.CarId" method="post">
                                     <button type="submit" class="btn btn-sm btn-danger">
                                         Удалить
                                     </button>
@@ -100,7 +192,14 @@
                 {
                     <li class="page-item">
                         <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber-1)"
-                              asp-route-settlementName="@(Model.FilterSettlementsViewModel.SelectedSettlementName)"
+                              asp-route-carBrand="@(Model.FilterCarsViewModel.SelectedCarBrandId)"
+                              asp-route-startBodyVolume="@(Model.FilterCarsViewModel.SelectedStartBodyVolume)"
+                              asp-route-endBodyVolume="@(Model.FilterCarsViewModel.SelectedEndBodyVolume)"
+                              asp-route-endLiftingCapacity="@(Model.FilterCarsViewModel.SelectedEndLiftingCapacity)"
+                              asp-route-startLiftingCapacity="@(Model.FilterCarsViewModel.SelectedStartLiftingCapacity)"
+                              asp-route-registrationNumber="@(Model.FilterCarsViewModel.SelectedRegistrationNumber)"
+                              asp-route-endDate="@(Model.FilterCarsViewModel.SelectedEndDate)"
+                              asp-route-startDate="@(Model.FilterCarsViewModel.SelectedStartDate)"
                               method="post">
 
                             <button type="submit" class="page-link">
@@ -122,7 +221,14 @@
                 {
                     <li class="page-item">
                         <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber+1)"
-                              asp-route-settlementName="@(Model.FilterSettlementsViewModel.SelectedSettlementName)"
+                              asp-route-carBrand="@(Model.FilterCarsViewModel.SelectedCarBrandId)"
+                              asp-route-startBodyVolume="@(Model.FilterCarsViewModel.SelectedStartBodyVolume)"
+                              asp-route-endBodyVolume="@(Model.FilterCarsViewModel.SelectedEndBodyVolume)"
+                              asp-route-endLiftingCapacity="@(Model.FilterCarsViewModel.SelectedEndLiftingCapacity)"
+                              asp-route-startLiftingCapacity="@(Model.FilterCarsViewModel.SelectedStartLiftingCapacity)"
+                              asp-route-registrationNumber="@(Model.FilterCarsViewModel.SelectedRegistrationNumber)"
+                              asp-route-endDate="@(Model.FilterCarsViewModel.SelectedEndDate)"
+                              asp-route-startDate="@(Model.FilterCarsViewModel.SelectedStartDate)"
                               method="post">
 
                             <button type="submit" class="page-link">
@@ -147,11 +253,22 @@
     </div>
     <script>
         function clearInputs() {
-            let settlementName = document.getElementById("settlementName");
-            settlementName.value = "";
-
-
-
+            let carBrand = document.getElementById("carBrand");
+            carBrand.value = 0;
+            let startLiftingCapacity = document.getElementById("startLiftingCapacity");
+            startLiftingCapacity.value = 0;
+            let endLiftingCapacity = document.getElementById("endLiftingCapacity");
+            endLiftingCapacity.value = 10000;
+            let startBodyVolume = document.getElementById("startBodyVolume");
+            startBodyVolume.value = 0;
+            let endBodyVolume = document.getElementById("endBodyVolume");
+            endBodyVolume.value = 10000;
+            let registrationNumber = document.getElementById("registrationNumber");
+            registrationNumber.value = "";
+            let startDate = document.getElementById("startDate");
+            startDate.value = "0001-01-01";
+            let endDate = document.getElementById("endDate");
+            endDate.value = "2030-01-01";
             let form = document.getElementById("form");
             form.submit();
         }
