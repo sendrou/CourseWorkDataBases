@@ -257,7 +257,8 @@ namespace Cargo.Controllers
 
             return View(viewModel);
         }
-        [Authorize(Roles = "admin")]
+        [Authorize]
+        //(Roles = "admin")
         public async Task<IActionResult> Edit(int id)
         {
             CargoTransportation cargo = _db.CargoTransportations.FirstOrDefault(t => t.DocumentId == id);
@@ -283,7 +284,8 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize]
+        //(Roles = "admin")
         public async Task<IActionResult> Edit(EditCargoTransportationsViewModel model)
         {
             if (ModelState.IsValid)
@@ -375,7 +377,9 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin")]
+        [Authorize]
+
+        //(Roles = "admin")
         public IActionResult Delete(int id)
         {
             CargoTransportation cargoTransportation = _db.CargoTransportations.FirstOrDefault(t => t.DocumentId == id);
