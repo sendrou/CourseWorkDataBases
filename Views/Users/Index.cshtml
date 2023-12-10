@@ -11,49 +11,74 @@
 </head>
 <body>
     <div class="container">
-        <div class="card">
+        <div class="card ">
             <form asp-action="UpdateIndex" method="post" id="form">
+
                 <div class="card-header text-center">
                     <ul class="nav nav-pills card-header-pills">
                         <li class="nav-item">
-                            <a class="nav-link active">Поиск</a>
+                            <a class="nav-link active bg-dark">Поиск</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-action="Create">Добавление</a>
+                            <a class="nav-link " asp-action="Create">Добавление</a>
                         </li>
                     </ul>
                 </div>
-                <div class="card-body">
+
+                <div class="card-body " style="margin-bottom: -20px">
+
                     <div class="form-row">
-                        <div class="col-11">
-                            <input placeholder="Логин" class="form-control" name="name" value="@Model.FilterUserViewModel.SelectedName" id="name" />
-                        </div>
+
+
                         <div class="col">
-                            <input class="btn btn-info" type="submit" value="Найти" />
+                            <label for="users">Логин</label>
+                            <input class="form-control" name="name" value="@Model.FilterUserViewModel.SelectedName" id="name" />
+                        </div>
+                        
+
+                        <div class="card-body">
+                            <div class="form-row float-right" style="margin-top:10px; margin-bottom:10px">
+                                <div class="col">
+                                    <input class="btn btn-dark" value="Очистить" type="button" onclick="clearInputs()" />
+                                </div>
+                                <div class="col">
+                                    <input class="btn btn-dark" type="submit" value="Найти" />
+                                </div>
+                            </div>
+
                         </div>
                     </div>
+
+
                 </div>
             </form>
         </div>
-        <div class="card" style="margin-top: 10px">
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Login</th>
-                            <th>Email</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var user in Model.Users)
+        <div class="card " style="margin-top: 20px; margin-bottom:-20px;">
+
+            <table class="table table-border " style="margin-bottom:-1px;">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Login</th>
+                        <th>Email</th>
+
+                        @if (User.IsInRole("admin"))
                         {
-                            <tr>
-                                <td>@user.UserName</td>
-                                <td>@user.Email</td>
+                            <th></th>
+                            <th></th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@user.UserName</td>
+                            <td>@user.Email</td>
+                            @if (User.IsInRole("admin"))
+                            {
                                 <td>
-                                    <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
+                                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@user.Id">Изменить</a>
                                 </td>
                                 <td>
                                     <form asp-action="Delete" asp-route-id="@user.Id" method="post">
@@ -62,21 +87,20 @@
                                         </button>
                                     </form>
                                 </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-
-
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
-        <nav style="margin-top: 10px">
+        <div style="margin-top: 100px; margin-bottom:100px"></div>
+        <nav style="margin-top: 10px; margin-bottom:50px">
             <ul class="pagination justify-content-end">
                 @if (Model.PageViewModel.HasPreviousPage)
                 {
                     <li class="page-item">
                         <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber-1)"
-                          asp-route-name="@(Model.FilterUserViewModel.SelectedName)" method="post">
+                              asp-route-name="@(Model.FilterUserViewModel.SelectedName)" method="post">
                             <button type="submit" class="page-link">
                                 Предыдущая
                             </button>
@@ -95,7 +119,7 @@
                 {
                     <li class="page-item">
                         <form asp-action="UpdateIndex" asp-route-page="@(Model.PageViewModel.PageNumber+1)"
-                          asp-route-name="@(Model.FilterUserViewModel.SelectedName)" method="post">
+                              asp-route-name="@(Model.FilterUserViewModel.SelectedName)" method="post">
                             <button type="submit" class="page-link">
                                 Следующая
                             </button>
@@ -112,6 +136,22 @@
                 }
             </ul>
         </nav>
+        <div style="margin-top: 100px; margin-bottom:100px"></div>
+
+
     </div>
+    <script>
+        function clearInputs() {
+            let login = document.getElementById("name");
+            login.value = "";
+
+
+
+            let form = document.getElementById("form");
+            form.submit();
+        }
+    </script>
 </body>
 </html>
+
+
