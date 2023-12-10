@@ -1,5 +1,6 @@
 ﻿using Cargo.Models;
 using Cargo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,7 +17,7 @@ namespace Cargo.Controllers
             _db = db;
         }
 
-        // GET: /TransportationTariffs/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -25,6 +26,7 @@ namespace Cargo.Controllers
         // POST: /TransportationTariffs/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Create(CreateTransportationTariffsViewModel model)
         {
             if (ModelState.IsValid)
@@ -45,6 +47,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             TransportationTariff tariff = _db.TransportationTariffs.FirstOrDefault(t => t.TransportationTariffId == id);
@@ -62,7 +65,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(EditTransportationTariffsViewModel model)
         {
@@ -91,7 +94,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
-
+        [Authorize]
         public IActionResult Index()
         {
             int pageSize = 10;
@@ -148,6 +151,7 @@ namespace Cargo.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> UpdateIndex(int endTariff = 1000, int startTariff = 0,int page = 1)
         {
             
@@ -167,6 +171,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             TransportationTariff transportationTariff = _db.TransportationTariffs.FirstOrDefault(t => t.TransportationTariffId == id);

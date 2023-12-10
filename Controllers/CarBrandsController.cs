@@ -1,5 +1,6 @@
 ﻿using Cargo.Models;
 using Cargo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -19,7 +20,7 @@ namespace Cargo.Controllers
             _cache = cache;
         }
 
-        // GET: /Settlements/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -28,6 +29,7 @@ namespace Cargo.Controllers
         // POST: /Settlements/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Create(CreateCarBrandsViewModel model)
         {
             if (ModelState.IsValid)
@@ -48,6 +50,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             CarBrand carBrand = _db.CarBrands.FirstOrDefault(t => t.CarBrandId == id);
@@ -67,6 +70,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(EditCarBrandsViewModel model)
         {
             if (ModelState.IsValid)
@@ -94,7 +98,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
-
+        [Authorize]
         public IActionResult Index()
         {
             int pageSize = 10;
@@ -152,6 +156,7 @@ namespace Cargo.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> UpdateIndex(string brandName = "", int page = 1)
         {
 
@@ -170,6 +175,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             CarBrand carBrand = _db.CarBrands.FirstOrDefault(t => t.CarBrandId == id);

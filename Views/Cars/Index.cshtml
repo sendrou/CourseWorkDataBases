@@ -103,10 +103,11 @@
                         <th>M^3KM</th>
                         <th>KM</th>
                         <th>Earn</th>
-
-                        <th></th>
-                        <th></th>
-
+                        @if (User.IsInRole("admin"))
+                        {
+                            <th></th>
+                            <th></th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -170,16 +171,19 @@
                             <td>@totalM3KM</td>
                             <td>@totalDistance</td>
                             <td>@totalPayment</td>
-                            <td>
-                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@car.CarId">Изменить</a>
-                            </td>
-                            <td>
-                                <form asp-action="Delete" asp-route-id="@car.CarId" method="post">
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        Удалить
-                                    </button>
-                                </form>
-                            </td>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <td>
+                                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@car.CarId">Изменить</a>
+                                </td>
+                                <td>
+                                    <form asp-action="Delete" asp-route-id="@car.CarId" method="post">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Удалить
+                                        </button>
+                                    </form>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>

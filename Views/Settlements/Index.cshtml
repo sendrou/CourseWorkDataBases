@@ -64,10 +64,11 @@
                     <tr>
                         <th>SettlementId</th>
                         <th>SettlementName</th>
-
-                        <th></th>
-                        <th></th>
-
+                        @if (User.IsInRole("admin"))
+                        {
+                            <th></th>
+                            <th></th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -77,17 +78,19 @@
                         <tr>
                             <td>@settlement.SettlementId</td>
                             <td>@settlement.SettlementName</td>
-
-                            <td>
-                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@settlement.SettlementId">Изменить</a>
-                            </td>
-                            <td>
-                                <form asp-action="Delete" asp-route-id="@settlement.SettlementId" method="post">
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        Удалить
-                                    </button>
-                                </form>
-                            </td>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <td>
+                                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@settlement.SettlementId">Изменить</a>
+                                </td>
+                                <td>
+                                    <form asp-action="Delete" asp-route-id="@settlement.SettlementId" method="post">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Удалить
+                                        </button>
+                                    </form>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>

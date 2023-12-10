@@ -39,7 +39,12 @@ namespace Cargo
 
             services.AddSession();
             services.AddMemoryCache();
+            var serviceProvider = services.BuildServiceProvider();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+            // Создание ролей "user" и "admin", если они не существуют
+            CreateRoleIfNotExists(roleManager, "user").Wait();
+            CreateRoleIfNotExists(roleManager, "admin").Wait();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -53,6 +58,7 @@ namespace Cargo
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+            
 
             app.UseSession();
 
@@ -73,6 +79,15 @@ namespace Cargo
                     defaults: new { controller = "Account" }
                 );
             });
+
+        }
+        private async Task CreateRoleIfNotExists(RoleManager<IdentityRole> roleManager, string roleName)
+        {
+            var roleExists = await roleManager.RoleExistsAsync(roleName);
+            if (!roleExists)
+            {
+                await roleManager.CreateAsync(new IdentityRole(roleName));
+            }
         }
     }
 }

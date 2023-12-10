@@ -64,10 +64,11 @@
                     <tr>
                         <th>OrganizationId</th>
                         <th>OrganizationName</th>
-
-                        <th></th>
-                        <th></th>
-
+                        @if (User.IsInRole("admin"))
+                        {
+                            <th></th>
+                            <th></th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -77,17 +78,19 @@
                         <tr>
                             <td>@organization.OrganizationId</td>
                             <td>@organization.OrganizationName</td>
-
-                            <td>
-                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@organization.OrganizationId">Изменить</a>
-                            </td>
-                            <td>
-                                <form asp-action="Delete" asp-route-id="@organization.OrganizationId" method="post">
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        Удалить
-                                    </button>
-                                </form>
-                            </td>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <td>
+                                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@organization.OrganizationId">Изменить</a>
+                                </td>
+                                <td>
+                                    <form asp-action="Delete" asp-route-id="@organization.OrganizationId" method="post">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Удалить
+                                        </button>
+                                    </form>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>

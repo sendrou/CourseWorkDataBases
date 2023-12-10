@@ -1,5 +1,6 @@
 ﻿using Cargo.Models;
 using Cargo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,7 @@ namespace Cargo.Controllers
             _db = db;
         }
 
-        // GET: /Settlements/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -26,6 +27,7 @@ namespace Cargo.Controllers
         // POST: /Settlements/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Create(CreateDriversViewModel model)
         {
             if (ModelState.IsValid)
@@ -46,6 +48,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             Driver driver = _db.Drivers.FirstOrDefault(t => t.DriverId == id);
@@ -65,6 +68,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(EditDriversViewModel model)
         {
             if (ModelState.IsValid)
@@ -92,7 +96,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
-
+        [Authorize]
         public IActionResult Index()
         {
             int pageSize = 10;
@@ -158,6 +162,7 @@ namespace Cargo.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> UpdateIndex(string driverName = "",string passportDetails="", DateTime startDate = default(DateTime), DateTime endDate = default(DateTime), int page = 1)
         {
         
@@ -186,6 +191,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             Driver driver = _db.Drivers.FirstOrDefault(t => t.DriverId == id);

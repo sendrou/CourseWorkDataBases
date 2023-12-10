@@ -78,10 +78,11 @@
                         <th>DeparturesSettlement</th>
                         <th>ArrivalSettlement</th>
                         <th>Distance</th>
-
-                        <th></th>
-                        <th></th>
-
+                        @if (User.IsInRole("admin"))
+                        {
+                            <th></th>
+                            <th></th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -93,17 +94,19 @@
                             <td>@distance.DeparturesSettlement.SettlementName</td>
                             <td>@distance.ArrivalSettlement.SettlementName</td>
                             <td>@distance.Distance1</td>
-
-                            <td>
-                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@distance.DistanceId">Изменить</a>
-                            </td>
-                            <td>
-                                <form asp-action="Delete" asp-route-id="@distance.DistanceId" method="post">
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        Удалить
-                                    </button>
-                                </form>
-                            </td>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <td>
+                                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@distance.DistanceId">Изменить</a>
+                                </td>
+                                <td>
+                                    <form asp-action="Delete" asp-route-id="@distance.DistanceId" method="post">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Удалить
+                                        </button>
+                                    </form>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>

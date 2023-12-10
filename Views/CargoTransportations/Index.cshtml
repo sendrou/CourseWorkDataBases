@@ -110,8 +110,11 @@
                             <th>Load</th>
                             <th>Tariff</th>
                             <th>Price</th>
+                            @if (User.IsInRole("admin"))
+                        {
                             <th></th>
                             <th></th>
+                        }
                         </tr>
 
                     </thead>
@@ -130,6 +133,8 @@
                                 <td>@cargo.Load.LoadName</td>
                                 <td>@(cargo.TransportationTariff.TariffPerTKm.ToString() + " время*км, " + cargo.TransportationTariff.TariffPerM3Km.ToString() + " м3*км")</td>
                                 <td>@price</td>
+                            @if (User.IsInRole("admin"))
+                            {
                                 <td>
                                     <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@cargo.DocumentId">Изменить</a>
                                 </td>
@@ -140,7 +145,8 @@
                                         </button>
                                     </form>
                                 </td>
-                            </tr>
+                            }
+                        </tr>
                         }
 
                     </tbody>

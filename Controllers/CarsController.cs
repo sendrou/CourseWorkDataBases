@@ -1,5 +1,6 @@
 ﻿using Cargo.Models;
 using Cargo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -17,7 +18,7 @@ namespace Cargo.Controllers
             _db = db;
         }
 
-        // GET: /Settlements/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -26,6 +27,7 @@ namespace Cargo.Controllers
         // POST: /Settlements/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Create(CreateCarsViewModel model)
         {
             if (ModelState.IsValid)
@@ -48,6 +50,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             Car car = _db.Cars.FirstOrDefault(t => t.CarId == id);
@@ -67,6 +70,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(EditCarsViewModel model)
         {
             if (ModelState.IsValid)
@@ -95,6 +99,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
+        [Authorize]
 
         public IActionResult Index()
         {
@@ -221,6 +226,8 @@ namespace Cargo.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [Authorize]
+
         public async Task<IActionResult> UpdateIndex(string registrationNumber = "",int startBodyVolume=0, int endBodyVolume =10000, int startLiftingCapacity =0, int endLiftingCapacity =10000,int carBrand=0, DateTime startDate = default(DateTime), DateTime endDate = default(DateTime), int page = 1)
         {
             if (endDate == default(DateTime))
@@ -257,6 +264,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             Car car = _db.Cars.FirstOrDefault(t => t.CarId == id);

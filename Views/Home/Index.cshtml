@@ -2,7 +2,27 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+
+</head>
+<body>
+     @if(User.Identity.IsAuthenticated)
+    {
+        <h1 class="display-6">Добро пожаловать на наш сайт, @User.Identity.Name!</h1>
+        <form method="post" asp-controller="Account" asp-action="Logout">
+            <input class="btn btn-lg btn-danger" style="margin-top: 10px" type="submit" value="Выход с аккаунта" />
+        </form>
+    }
+    else
+    {
+        <h1 class="display-6">
+            Добро пожаловать на наш сайт! Чтобы начать использовать все функции сайта, пожалуйста, выполните вход или зарегистрируйтесь.
+        </h1>
+        <a style="margin-right: 10px" class="btn btn-lg btn-primary" asp-controller="Account" asp-action="Login">Вход</a>
+        <a class="btn btn-lg btn-secondary" asp-controller="Account" asp-action="Register">Регистрация</a>
+    }
+
+</body>
+</html>

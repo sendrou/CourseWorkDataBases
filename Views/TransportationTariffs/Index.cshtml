@@ -68,9 +68,11 @@
             <th>TransportationTariffID</th>
             <th>TariffPer(t*km)</th>
             <th>TariffPer(m^3*km)</th>
+            @if (User.IsInRole("admin"))
+                        {
                             <th></th>
                             <th></th>
-
+                        }
         </tr>
                     </thead>
                     <tbody>
@@ -81,6 +83,8 @@
                 <td>@tariff.TransportationTariffId</td>
                 <td>@tariff.TariffPerTKm</td>
                 <td>@tariff.TariffPerM3Km</td>
+                            @if (User.IsInRole("admin"))
+                            {
                                 <td>
                                     <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@tariff.TransportationTariffId">Изменить</a>
                                 </td>
@@ -91,7 +95,8 @@
                                         </button>
                                     </form>
                                 </td>
-            </tr>
+                            }
+                        </tr>
         }
                     </tbody>
                 </table>

@@ -1,5 +1,6 @@
 ﻿using Cargo.Models;
 using Cargo.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,7 +19,7 @@ namespace Cargo.Controllers
             _db = db;
         }
 
-        // GET: /Settlements/Create
+        [Authorize]
         public IActionResult Create()
         {
             List<Settlement> settlements = _db.Settlements.ToList();
@@ -30,6 +31,7 @@ namespace Cargo.Controllers
         // POST: /Settlements/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public IActionResult Create(CreateDistancesViewModel model)
         {
             if (ModelState.IsValid)
@@ -51,6 +53,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int id)
         {
             Distance distance = _db.Distances.FirstOrDefault(t => t.DistanceId == id);
@@ -70,6 +73,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(EditDistancesViewModel model)
         {
             if (ModelState.IsValid)
@@ -96,7 +100,7 @@ namespace Cargo.Controllers
 
             return View(model);
         }
-
+        [Authorize]
         public IActionResult Index()
         {
             int pageSize = 10;
@@ -177,6 +181,8 @@ namespace Cargo.Controllers
             return View(viewModel);
         }
         [HttpPost]
+        [Authorize]
+
         public async Task<IActionResult> UpdateIndex(string departuresSettlementName = "", string arrivalSettlementName = "", int endDistance = 10000, int startDistance = 0,int page = 1)
         {
 
@@ -202,6 +208,7 @@ namespace Cargo.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             Distance distance = _db.Distances.FirstOrDefault(t => t.DistanceId == id);

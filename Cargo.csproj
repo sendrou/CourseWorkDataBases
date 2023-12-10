@@ -108,4 +108,10 @@
     <UpToDateCheckInput Remove="Views\Distances\Edit.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="Views\Users\Create.cshtml" />
+    <None Include="Views\Users\Edit.cshtml" />
+    <None Include="Views\Users\Index.cshtml" />
+  </ItemGroup>
+
 </Project>

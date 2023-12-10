@@ -29,8 +29,7 @@ namespace Cargo.Controllers
 
                 IdentityUser user = new IdentityUser { UserName = model.Login,  Email = model.Email };
 
-                    
-                   // Email = model.Email, UserName = model.Email, Year = model.Year };
+                
                 // добавляем пользователя
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)

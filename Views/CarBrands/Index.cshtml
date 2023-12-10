@@ -64,10 +64,11 @@
                     <tr>
                         <th>CarBrandId</th>
                         <th>BrandName</th>
-
-                        <th></th>
-                        <th></th>
-
+                        @if (User.IsInRole("admin"))
+                        {
+                            <th></th>
+                            <th></th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -77,17 +78,19 @@
                         <tr>
                             <td>@carBrand.CarBrandId</td>
                             <td>@carBrand.BrandName</td>
-
-                            <td>
-                                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@carBrand.CarBrandId">Изменить</a>
-                            </td>
-                            <td>
-                                <form asp-action="Delete" asp-route-id="@carBrand.CarBrandId" method="post">
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        Удалить
-                                    </button>
-                                </form>
-                            </td>
+                            @if (User.IsInRole("admin"))
+                            {
+                                <td>
+                                    <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@carBrand.CarBrandId">Изменить</a>
+                                </td>
+                                <td>
+                                    <form asp-action="Delete" asp-route-id="@carBrand.CarBrandId" method="post">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Удалить
+                                        </button>
+                                    </form>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>
