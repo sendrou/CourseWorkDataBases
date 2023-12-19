@@ -160,13 +160,9 @@ namespace Cargo.Controllers
         {
             Organization organization = _db.Organizations.FirstOrDefault(t => t.OrganizationId == id);
 
-            List<CargoTransportation> cargos = _db.CargoTransportations.Where(t => t.OrganizationId == id).ToList();
             if (organization != null)
             {
-                if (cargos.Any())
-                {
-                    _db.CargoTransportations.RemoveRange(cargos);
-                }
+               
                 _db.Organizations.Remove(organization);
             }
 
