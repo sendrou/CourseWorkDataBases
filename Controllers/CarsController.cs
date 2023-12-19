@@ -21,7 +21,14 @@ namespace Cargo.Controllers
         [Authorize]
         public IActionResult Create()
         {
-            return View();
+
+
+            List<CarBrand> carBrands = _db.CarBrands.ToList();
+
+
+            CreateCarsViewModel viewModel = new CreateCarsViewModel(carBrands);
+
+            return View(viewModel);
         }
 
         // POST: /Settlements/Create

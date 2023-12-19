@@ -23,7 +23,7 @@ namespace Cargo
         public IConfiguration Configuration { get; }
         public void ConfigureServices(IServiceCollection services)
         {
-            string? connection = Configuration.GetConnectionString("CargoContextConnection");
+            string? connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<CargoContext>(options => options.UseSqlServer(connection));
             services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connection));
